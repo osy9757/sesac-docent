@@ -1,4 +1,5 @@
 import HomeImage from "../../assets/home_fred_tokyo.jpeg";
+import { HomeCardBox } from "../../components/home-card-sections/HomeCardBox";
 
 const Home = () => {
   return (
@@ -20,6 +21,12 @@ const Home = () => {
           하이 주얼리 크리에이터 프레드 전시
         </p>
       </div>
+      <section className="flex flex-col justify-center max-w-[1800px] mx-auto gap-8 mt-24 mb-36">
+        <HomeCardBox category="galleries" />
+        <HomeCardBox category="exhibitions" />
+        <HomeCardBox category="works" />
+        <HomeCardBox category="reviews" />
+      </section>
     </div>
   );
 };

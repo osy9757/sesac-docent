@@ -81,7 +81,7 @@ const Register = () => {
               type="text"
               label="이름 *"
               inputState={userName}
-              errorMessage="2~16자의 한글을 입력해 주세요."
+              errorMessage="2~16자의 한글을 올바르게 입력해 주세요."
             />
             {!isValid && <SignError message="입력값을 다시 확인해주세요." />}
             {isDuplicated && <SignError message={errorMessage} />}
@@ -96,8 +96,12 @@ const Register = () => {
           </form>
         </div>
         <div className="flex justify-center items-center">
-          <div className="w-3/4">
-            <img src={LoginImage} alt="I am Ground, ALT.1" />
+          <div className="ml-24" style={{ aspectRatio: "20/13" }}>
+            <img
+              src={LoginImage}
+              alt="I am Ground, ALT.1"
+              className="h-auto object-cover w-[850px]"
+            />
           </div>
         </div>
       </div>

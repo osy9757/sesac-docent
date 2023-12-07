@@ -83,8 +83,12 @@ const Login = () => {
           </form>
         </div>
         <div className="flex justify-center items-center">
-          <div className="w-3/4">
-            <img src={LoginImage} alt="I am Ground, ALT.1" />
+          <div className="ml-24" style={{ aspectRatio: "20/13" }}>
+            <img
+              src={LoginImage}
+              alt="I am Ground, ALT.1"
+              className="h-auto object-cover w-[850px]"
+            />
           </div>
         </div>
       </div>
