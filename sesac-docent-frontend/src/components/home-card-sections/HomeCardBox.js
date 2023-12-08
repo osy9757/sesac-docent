@@ -6,6 +6,7 @@ import DUMMY_CHUN from "../../assets/dummy_chun_01.jpeg";
 import DUMMY_KIM from "../../assets/dummy_kim_02.jpeg";
 import DUMMY_CHOI from "../../assets/dummy_choi_03.jpeg";
 import DUMMY_SHIM from "../../assets/dummy_shim_04.jpeg";
+import { cn } from "../../utils/tailwind-merge";
 
 export const HomeCardBox = ({ category }) => {
   const cards = [];
@@ -50,10 +51,10 @@ export const HomeCardBox = ({ category }) => {
 
   return (
     <div
-      className="w-full flex flex-col border-b-2 border-black border-solid pt-16 pb-24 gap-12"
-      style={
-        category === "reviews" ? { border: "none" } : { border: "bottom 2px" }
-      }
+      className={cn(
+        "w-full flex flex-col border-b-2 border-black border-solid pt-16 pb-24 gap-12",
+        category === "reviews" ? " border-none" : "border-b-2"
+      )}
     >
       <div className="flex justify-between items-center">
         <p className="text-4xl font-medium">{titleMap[category]}</p>
@@ -61,7 +62,7 @@ export const HomeCardBox = ({ category }) => {
           to="#"
           className="flex justify-center items-center gap-1 text-black hover:text-black/60 transition"
         >
-          <p className="text-xl font-normal">{titleMap[category]} 모두 보기</p>
+          <p className="text-lg font-normal">{titleMap[category]} 모두 보기</p>
           <ChevronRight size={20} />
         </Link>
       </div>

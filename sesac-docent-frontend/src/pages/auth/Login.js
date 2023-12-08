@@ -33,8 +33,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center mt-40 mb-32">
-      <div className="max-w-[1600px] flex justify-between">
+    <div className="flex justify-center mt-24 mb-16">
+      <div className="max-w-[1300px] flex justify-between">
         <div className="w-fit py-16 flex flex-col justify-center gap-8 mx-10">
           <p className="text-7xl font-bold">로그인</p>
           <p className="text-xl">

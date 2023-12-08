@@ -54,8 +54,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center mt-40 mb-32">
-      <div className="max-w-[1600px] flex justify-between">
+    <div className="flex justify-center mt-24 mb-16">
+      <div className="max-w-[1300px] flex justify-between">
         <div className="w-fit py-16 flex flex-col justify-center gap-8 mx-10">
           <p className="w-fit text-7xl font-bold">회원가입</p>
           <form className="flex flex-col gap-4 w-fit sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[560px] border border-black p-4">
