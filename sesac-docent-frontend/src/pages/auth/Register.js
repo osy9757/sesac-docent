@@ -6,13 +6,13 @@ import {
   validatePassword,
   validateConfirm,
   validateNickname,
-} from "../../utils/validate-input";
-import { useInput } from "../../hooks/use-input";
-import api from "../../apis/api";
+} from "utils/validate-input";
+import { useInput } from "hooks/use-input";
+import api from "apis/api";
 
-import { SignError } from "../../components/auth/SignError";
-import { SignInput } from "../../components/auth/SignInput";
-import LoginImage from "../../assets/i_am_ground_wide.jpeg";
+import { SignError } from "pages/auth/components/SignError";
+import { SignInput } from "pages/auth/components/SignInput";
+import LoginImage from "assets/i_am_ground_wide.jpeg";
 
 const Register = () => {
   const navigate = useNavigate();

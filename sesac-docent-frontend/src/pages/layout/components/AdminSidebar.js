@@ -9,10 +9,11 @@ import {
   SquareUserRound,
 } from "lucide-react";
 
-import BabyGroot from "../../assets/baby-groot.svg";
-import { SidebarLink } from "./LayoutLinks";
-import { MenuContext } from "./AdminLayout";
-import { cn } from "../../utils/tailwind-merge";
+import { SidebarLink } from "pages/layout/components/LayoutLinks";
+import { MenuContext } from "pages/layout/AdminLayout";
+import BabyGroot from "assets/baby-groot.svg";
+
+import { cn } from "utils/tailwind-merge";
 
 export const AdminSidebar = () => {
   const { menuClicked } = useContext(MenuContext);

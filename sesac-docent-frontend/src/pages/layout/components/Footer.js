@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import LogoSvg from "../../assets/logo_horizontal_footer.svg";
+
 import { FooterLink } from "./LayoutLinks";
+import LogoSvg from "assets/logo_horizontal_footer.svg";
 
 export const Footer = () => {
   return (

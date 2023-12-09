@@ -1,9 +1,9 @@
 import { createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 
-import { AdminHeader } from "./AdminHeader";
-import { AdminSidebar } from "./AdminSidebar";
-import { cn } from "../../utils/tailwind-merge";
+import { AdminHeader } from "pages/layout/components/AdminHeader";
+import { AdminSidebar } from "pages/layout/components/AdminSidebar";
+import { cn } from "utils/tailwind-merge";
 
 export const MenuContext = createContext();
 

@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { LinkBox, LowerHeaderLink, UpperHeaderLink } from "./LayoutLinks";
-import LogoSvg from "../../assets/logo_horizontal.svg";
+import LogoSvg from "assets/logo_horizontal.svg";
 
-import { cn } from "../../utils/tailwind-merge";
+import { cn } from "utils/tailwind-merge";
 
 export const Header = () => {
-  const [height, setHeight] = useState(100);
+  const [height, setHeight] = useState(95);
   const [navFixed, setNavFixed] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       requestAnimationFrame(() => {
-        setHeight(Math.max(100 - scrollY * 1.1428, 60));
+        setHeight(Math.max(95 - scrollY, 60));
         setNavFixed(scrollY <= 35 ? false : true);
       });
     };

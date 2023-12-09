@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { validateEmail, validatePassword } from "../../utils/validate-input";
-import { useInput } from "../../hooks/use-input";
-import api from "../../apis/api";
+import { validateEmail, validatePassword } from "utils/validate-input";
+import { useInput } from "hooks/use-input";
+import api from "apis/api";
 
-import { SignInput } from "../../components/auth/SignInput";
-import { SignError } from "../../components/auth/SignError";
-import LoginImage from "../../assets/i_am_ground_wide.jpeg";
+import { SignInput } from "pages/auth/components/SignInput";
+import { SignError } from "pages/auth/components/SignError";
+import LoginImage from "assets/i_am_ground_wide.jpeg";
 
 const Login = () => {
   const navigate = useNavigate();

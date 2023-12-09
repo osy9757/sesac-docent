@@ -1,14 +1,16 @@
+import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { IoMdPlay } from "react-icons/io";
-import { cn } from "../../utils/tailwind-merge";
-import { useContext } from "react";
-import { MenuContext } from "./AdminLayout";
+
+import { MenuContext } from "pages/layout/AdminLayout";
+
+import { cn } from "utils/tailwind-merge";
 
 export const UpperHeaderLink = ({ link, text }) => {
   return (
     <Link
       to={`${link}`}
-      className="flex justify-center items-center gap-1 w-fit"
+      className="flex justify-center items-center gap-1 w-fit font-semibold"
     >
       <IoMdPlay size={12} />
       {text}
@@ -36,7 +38,7 @@ export const LowerHeaderLink = ({ link, text }) => {
   return (
     <Link
       to={`${link}`}
-      className="hover:underline font-semibold xl:text-xl lg:text-lg md:text-base"
+      className="hover:underline font-bold xl:text-xl lg:text-lg md:text-base"
     >
       {text}
     </Link>

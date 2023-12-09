@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { Menu } from "lucide-react";
 
 import { UpperHeaderLink } from "./LayoutLinks";
-import { MenuContext } from "./AdminLayout";
-import LogoSvg from "../../assets/logo_horizontal.svg";
-import { cn } from "../../utils/tailwind-merge";
+import LogoSvg from "assets/logo_horizontal.svg";
+
+import { MenuContext } from "pages/layout/AdminLayout";
+import { cn } from "utils/tailwind-merge";
 
 export const AdminHeader = () => {
   const { menuClicked, menuClickHandler } = useContext(MenuContext);
 
   return (
-    <div className="w-full h-20 py-2 pl-4 pr-6 flex items-center justify-center border-b border-teal-500 shadow-sm shadow-teal-800 fixed z-20">
+    <div className="w-full h-20 py-2 pl-4 pr-6 flex items-center justify-center border-b border-teal-500 shadow-sm shadow-teal-800 fixed z-20 bg-gray-50">
       <div className="w-1/3 flex items-center gap-4">
         <div
           className={cn(
