@@ -20,7 +20,7 @@ const AdminLayout = () => {
       <AdminSidebar />
       <div
         className={cn(
-          "relative top-20 h-full overflow-scroll",
+          "relative top-20 h-full overflow-scroll bg-zinc-100",
           menuClicked ? "left-[73px]" : "left-[240px]"
         )}
         style={{

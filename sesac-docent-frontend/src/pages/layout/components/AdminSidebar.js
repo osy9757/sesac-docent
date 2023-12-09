@@ -39,7 +39,13 @@ export const AdminSidebar = () => {
           <img src={BabyGroot} alt="Baby Groot" className="h-full" />
         </div>
       </div>
-      <SidebarLink link="/admin" text="대시보드" icon={<Layout />} />
+      {/* <SidebarLink link="/admin" text="대시보드" icon={<Layout />} /> */}
+      <SidebarLink
+        link="/admin/inquiry"
+        text="1:1 문의"
+        icon={<Layout />}
+        // icon={<HelpCircle />}
+      />
       <SidebarLink
         link="/admin/user"
         text="회원 관리"

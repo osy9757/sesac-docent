@@ -1,5 +1,7 @@
+import { AdminTemplate } from "./components/AdminTemplate";
+
 const AdminUser = () => {
-  return <div>Admin User</div>;
+  return <AdminTemplate type="user" title="회원 관리" />;
 };
 
 export default AdminUser;

@@ -1,5 +1,7 @@
+import { AdminTemplate } from "./components/AdminTemplate";
+
 const AdminGallery = () => {
-  return <div>Admin Gallery</div>;
+  return <AdminTemplate type="gallery" title="공간 관리" />;
 };
 
 export default AdminGallery;

@@ -59,7 +59,6 @@ export const SidebarLink = ({ link, text, icon }) => {
   return (
     <NavLink
       to={`${link}`}
-      end
       className={({ isActive }) =>
         isActive
           ? "h-12 p-4 px-6 text-zinc-500 flex items-center gap-3 text-lg font-medium hover:bg-zinc-200 transition cursor-pointer bg-zinc-200"

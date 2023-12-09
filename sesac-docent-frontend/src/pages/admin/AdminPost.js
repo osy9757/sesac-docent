@@ -1,5 +1,7 @@
+import { AdminTemplate } from "./components/AdminTemplate";
+
 const AdminPost = () => {
-  return <div>Admin Post</div>;
+  return <AdminTemplate type="artist" title="게시물 관리" />;
 };
 
 export default AdminPost;
