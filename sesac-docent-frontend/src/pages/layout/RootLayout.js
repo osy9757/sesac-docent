@@ -6,9 +6,11 @@ import { Footer } from "pages/layout/components/Footer";
 const RootLayout = () => {
   return (
     <>
-      <Header />
-      <Outlet />
-      <Footer />
+      <div className="w-full h-full bg-white">
+        <Header />
+        <Outlet />
+        <Footer />
+      </div>
     </>
   );
 };
