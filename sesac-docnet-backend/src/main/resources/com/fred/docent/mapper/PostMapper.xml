@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fred.docent.mapper.PostMapper">
+
+	<insert id="insertPost"
+		parameterType="com.fred.docent.domain.InsertPostDTO">
+		CALL insert_post(
+		#{user_Id, jdbcType=NUMERIC},
+		#{exhibition_Id, jdbcType=NUMERIC},
+		#{category, jdbcType=NUMERIC},
+		#{title, jdbcType=VARCHAR},
+		#{content, jdbcType=CLOB},
+		#{reply_Id,
+		jdbcType=NUMERIC}
+		)
+	</insert>
+
+	<select id="fetchPosts"
+		parameterType="com.fred.docent.domain.FetchPostsRequestDTO"
+		resultType="com.fred.docent.domain.FetchPostsResponseDTO">
+		CALL fetch_posts(
+		#{requestDTO.category, jdbcType=NUMERIC},
+		#{requestDTO.page_Size, jdbcType=NUMERIC},
+		#{requestDTO.page_Number, jdbcType=NUMERIC},
+		#{requestDTO.search_Title, jdbcType=VARCHAR}
+		)
+	</select>
+
+	<select id="fetchPostDetails"
+		parameterType="com.fred.docent.domain.FetchPostDetailsRequestDTO"
+		resultType="com.fred.docent.domain.FetchPostDetailsResponseDTO">
+		CALL fetch_post_details(
+		#{post_Id, jdbcType=NUMERIC},
+		#{category, jdbcType=NUMERIC}
+		)
+	</select>
+
+</mapper>

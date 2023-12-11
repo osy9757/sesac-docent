@@ -22,6 +22,9 @@ export const validatePassword = (pw) => {
 export const validateConfirm = (pw1, pw2) => {
   return pw1 === pw2;
 };
+export const validateAuthNumber = (authNumber) => {
+  return /^[0-9]{6}$/.test(authNumber);
+};
 export const isAdult = (birthDateString) => {
   const birthYear = parseInt(birthDateString.substr(0, 4));
   const birthMonth = parseInt(birthDateString.substr(4, 2));

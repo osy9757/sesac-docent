@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.fred.docent.mapper.ArtsearchMapper">
+    <select id="findArtwork" parameterType="map" resultType="com.fred.docent.domain.ArtDTO">
+        SELECT * FROM temp_works
+        WHERE WORK_ID = #{work_Id}
+    </select>
+    
+    <select id="findAuthor" parameterType="map" resultType="com.fred.docent.domain.AuthorDTO">
+        SELECT * FROM temp_authors
+        WHERE AUTHOR_ID = #{author_Id}
+    </select>
+    
+    <select id="findExhibition" parameterType="map" resultType="com.fred.docent.domain.ExhibitionDTO">
+        SELECT * FROM temp_exhibitions
+        WHERE EXHIBITION_ID = #{exhibition_Id}
+    </select>
+    
+    <select id="findGallery" parameterType="map" resultType="com.fred.docent.domain.GalleryDTO">
+        SELECT * FROM temp_galleries
+        WHERE GALLERY_ID = #{gallery_Id}
+    </select>
+</mapper>

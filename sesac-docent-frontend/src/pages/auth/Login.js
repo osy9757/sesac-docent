@@ -8,12 +8,15 @@ import api from "apis/api";
 import { SignInput } from "pages/auth/components/SignInput";
 import { SignError } from "pages/auth/components/SignError";
 import LoginImage from "assets/i_am_ground_wide.jpeg";
+import { useDispatch } from "react-redux";
+import { login } from "store/features/auth-slice";
 
 const Login = () => {
   const navigate = useNavigate();
   const email = useInput(validateEmail);
   const password = useInput(validatePassword);
   const [isValid, setIsValid] = useState(true);
+  const dispatch = useDispatch();
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -23,13 +26,17 @@ const Login = () => {
     if (!valid) {
       return;
     }
-    const response = await api.post("/auth/login", { email, password });
-    if (!response?.error) {
-      navigate.push("/");
-    } else {
-      console.log("Login Failed.");
-      setIsValid(false);
-    }
+
+    dispatch(login({ email: email.value }));
+    navigate("/");
+
+    // const response = await api.post("/auth/login", { email, password });
+    // if (!response?.error) {
+    //   navigate.push("/");
+    // } else {
+    //   console.log("Login Failed.");
+    //   setIsValid(false);
+    // }
   };
 
   return (

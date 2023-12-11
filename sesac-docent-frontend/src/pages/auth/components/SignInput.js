@@ -20,6 +20,8 @@ export const SignInput = (props) => {
         type={props.type}
         onChange={props.inputState?.changeHandler}
         onBlur={props.inputState?.blurHandler}
+        placeholder={props?.placeholder}
+        readOnly={props?.readOnly}
       />
       {isValid === "invalid" && (
         <p className="text-lg font-medium text-rose-700">

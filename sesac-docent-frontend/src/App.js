@@ -13,6 +13,9 @@ import AdminExhibition from "pages/admin/AdminExhibition";
 import AdminGallery from "pages/admin/AdminGallery";
 import AdminArtist from "pages/admin/AdminArtist";
 import AdminInquiry from "pages/admin/AdminInquiry";
+import MyInfo from "pages/auth/MyInfo";
+import { Provider } from "react-redux";
+import { ReduxProvider } from "store/provider";
 
 const adminRoutes = [
   { name: "inquiry", component: <AdminInquiry /> },
@@ -32,6 +35,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "myinfo", element: <MyInfo /> },
     ],
   },
   {
@@ -54,7 +58,11 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <ReduxProvider>
+      <RouterProvider router={router} />;
+    </ReduxProvider>
+  );
 };
 
 export default App;

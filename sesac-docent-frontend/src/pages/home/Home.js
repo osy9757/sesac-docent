@@ -1,8 +1,12 @@
 import HomeImage from "assets/home_fred_tokyo.jpeg";
 
 import { HomeCardBox } from "./components/HomeCardBox";
+import { useAppSelector } from "store/store";
 
 const Home = () => {
+  const state = useAppSelector((state) => state.authReducer);
+  console.log(state.email);
+
   return (
     <div className="w-full">
       <div className="w-full h-fit aspect-video">

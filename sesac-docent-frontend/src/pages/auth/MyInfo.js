@@ -13,25 +13,31 @@ import api from "apis/api";
 import { SignError } from "pages/auth/components/SignError";
 import { SignInput } from "pages/auth/components/SignInput";
 import LoginImage from "assets/i_am_ground_wide.jpeg";
+import { useAppSelector } from "store/store";
+import authSlice from "store/features/auth-slice";
 import { SignInputCheck } from "./components/SignInputCheck";
 
-const Register = () => {
+const MyInfo = () => {
   const navigate = useNavigate();
   const email = useInput(validateEmail);
-  const authNumber = useInput(validateEmail);
-  const password = useInput(validatePassword);
-  const confirm = useInput((value) => validateConfirm(value, password.value));
+  const pastPassword = useInput(validatePassword);
+  const newPassword = useInput(validatePassword);
+  const newConfirm = useInput((value) =>
+    validateConfirm(value, newPassword.value)
+  );
   const userName = useInput(validateNickname);
   const [isValid, setIsValid] = useState(true);
   const [isDuplicated, setIsDuplicated] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [emailUnique, setEmailUnique] = useState(false);
-  const [authNumberValid, setAuthNumberValid] = useState(false);
+  const state = useAppSelector((state) => state.authReducer);
 
   const submitHandler = async (event) => {
     event.preventDefault();
     const valid =
-      email.isValid && password.isValid && confirm.isValid && userName.isValid;
+      email.isValid &&
+      newPassword.isValid &&
+      newConfirm.isValid &&
+      userName.isValid;
     setIsValid(valid);
     setIsDuplicated(false);
 
@@ -39,58 +45,54 @@ const Register = () => {
       return;
     }
 
-    const response = await api.post("/auth/register", {
-      email,
-      password,
-      userName,
-    });
-    if (response.data.message === "success") {
-      navigate.push("/login");
-    } else {
-      if (response.data.errorCode === "email")
-        setErrorMessage("이미 존재하는 이메일입니다.");
-      if (response.data.errorCode === "name")
-        setErrorMessage("이미 존재하는 이름입니다.");
-      setIsDuplicated(true);
-      setIsValid(false);
-    }
-    console.log(response.data.message);
+    // const response = await api.post("/auth/register", {
+    //   email,
+    //   password,
+    //   userName,
+    // });
+    // if (response.data.message === "success") {
+    //   navigate.push("/login");
+    // } else {
+    //   if (response.data.errorCode === "email")
+    //     setErrorMessage("이미 존재하는 이메일입니다.");
+    //   if (response.data.errorCode === "name")
+    //     setErrorMessage("이미 존재하는 이름입니다.");
+    //   setIsDuplicated(true);
+    //   setIsValid(false);
+    // }
+    // console.log(response.data.message);
   };
 
   return (
     <div className="flex justify-center mt-24 mb-16">
       <div className="max-w-[1300px] flex justify-between">
         <div className="w-fit py-16 flex flex-col justify-center gap-8 mx-10">
-          <p className="w-fit text-7xl font-bold">회원가입</p>
+          <p className="w-fit text-7xl font-bold">마이페이지</p>
           <form className="flex flex-col gap-4 w-fit sm:w-[350px] md:w-[400px] lg:w-[450px] xl:w-[500px] 2xl:w-[560px] border border-black p-4">
-            <SignInputCheck
+            <SignInput
               type="email"
-              checkType="emailUnique"
               label="이메일 *"
               inputState={email}
               errorMessage="이메일 형식이 올바르지 않습니다."
-              setEmailUnique={setEmailUnique}
+              placeholder={state.email}
+              readOnly={true}
             />
-            {emailUnique && (
-              <SignInputCheck
-                type="number"
-                checkType="authNumber"
-                label="인증번호 *"
-                inputState={authNumber}
-                errorMessage="인증번호 형식이 올바르지 않습니다."
-                setAuthNumberValid={setAuthNumberValid}
-              />
-            )}
             <SignInput
               type="password"
-              label="비밀번호 *"
-              inputState={password}
+              label="기존 비밀번호 *"
+              inputState={pastPassword}
               errorMessage="8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요."
             />
             <SignInput
               type="password"
-              label="비밀번호 확인 *"
-              inputState={confirm}
+              label="새 비밀번호 *"
+              inputState={newPassword}
+              errorMessage="8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요."
+            />
+            <SignInput
+              type="password"
+              label="새 비밀번호 확인 *"
+              inputState={newConfirm}
               errorMessage="비밀번호가 일치하지 않습니다."
             />
             <SignInput
@@ -98,6 +100,8 @@ const Register = () => {
               label="이름 *"
               inputState={userName}
               errorMessage="2~16자의 한글을 올바르게 입력해 주세요."
+              placeholder={state.email}
+              readOnly={true}
             />
             {!isValid && <SignError message="입력값을 다시 확인해주세요." />}
             {isDuplicated && <SignError message={errorMessage} />}
@@ -125,4 +129,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default MyInfo;
