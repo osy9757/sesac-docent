@@ -6,6 +6,7 @@ import {
   validatePassword,
   validateConfirm,
   validateNickname,
+  validateAuthNumber,
 } from "utils/validate-input";
 import { useInput } from "hooks/use-input";
 import api from "apis/api";
@@ -18,14 +19,13 @@ import { SignInputCheck } from "./components/SignInputCheck";
 const Register = () => {
   const navigate = useNavigate();
   const email = useInput(validateEmail);
-  const authNumber = useInput(validateEmail);
+  const authNumber = useInput(validateAuthNumber);
   const password = useInput(validatePassword);
   const confirm = useInput((value) => validateConfirm(value, password.value));
   const userName = useInput(validateNickname);
   const [isValid, setIsValid] = useState(true);
-  const [isDuplicated, setIsDuplicated] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [emailUnique, setEmailUnique] = useState(false);
+  const [serverAuthNumber, setServerAuthNumber] = useState("");
   const [authNumberValid, setAuthNumberValid] = useState(false);
 
   const submitHandler = async (event) => {
@@ -33,28 +33,18 @@ const Register = () => {
     const valid =
       email.isValid && password.isValid && confirm.isValid && userName.isValid;
     setIsValid(valid);
-    setIsDuplicated(false);
 
     if (!valid) {
       return;
     }
 
-    const response = await api.post("/auth/register", {
-      email,
-      password,
-      userName,
+    await api.post("/user/insert", {
+      email: email.value,
+      password: password.value,
+      username: userName.value,
     });
-    if (response.data.message === "success") {
-      navigate.push("/login");
-    } else {
-      if (response.data.errorCode === "email")
-        setErrorMessage("이미 존재하는 이메일입니다.");
-      if (response.data.errorCode === "name")
-        setErrorMessage("이미 존재하는 이름입니다.");
-      setIsDuplicated(true);
-      setIsValid(false);
-    }
-    console.log(response.data.message);
+
+    navigate("/login");
   };
 
   return (
@@ -66,19 +56,24 @@ const Register = () => {
             <SignInputCheck
               type="email"
               checkType="emailUnique"
+              value={email.value}
               label="이메일 *"
               inputState={email}
               errorMessage="이메일 형식이 올바르지 않습니다."
               setEmailUnique={setEmailUnique}
+              setServerAuthNumber={setServerAuthNumber}
             />
             {emailUnique && (
               <SignInputCheck
-                type="number"
+                type="authNumber"
                 checkType="authNumber"
+                value={authNumber.value}
                 label="인증번호 *"
                 inputState={authNumber}
                 errorMessage="인증번호 형식이 올바르지 않습니다."
+                serverAuthNumber={serverAuthNumber}
                 setAuthNumberValid={setAuthNumberValid}
+                authNumberValid={authNumberValid}
               />
             )}
             <SignInput
@@ -100,11 +95,10 @@ const Register = () => {
               errorMessage="2~16자의 한글을 올바르게 입력해 주세요."
             />
             {!isValid && <SignError message="입력값을 다시 확인해주세요." />}
-            {isDuplicated && <SignError message={errorMessage} />}
             <div className="flex gap-4 justify-end">
               <button
                 onClick={submitHandler}
-                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold"
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
               >
                 회원가입
               </button>

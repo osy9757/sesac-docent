@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class CustomUser extends User {
-	
+
 	private UserDTO userDTO;
 
 	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -16,10 +16,10 @@ public class CustomUser extends User {
 	}
 
 	public CustomUser(UserDTO userDTO) {
-		super(userDTO.getEmail(), userDTO.getPassword(), userDTO.getAuthorities()
-																	 .stream() // List ÇüÅÂ(getAuthorities())¸¦ ½ºÆ®¸²À¸·Î º¯È¯ÇØÁÖ´Â °úÁ¤
-																	 .map(auth -> new SimpleGrantedAuthority(auth.getAuth()))
-																	 .collect(Collectors.toList()));
+		super(userDTO.getEmail(), userDTO.getPassword(), userDTO.getAuthorities().stream() // List
+																							// ï¿½ï¿½ï¿½ï¿½(getAuthorities())ï¿½ï¿½
+																							// ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½
+				.map(auth -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
 		this.userDTO = userDTO;
 	}
 

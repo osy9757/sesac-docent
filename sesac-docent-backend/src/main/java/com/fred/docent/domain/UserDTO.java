@@ -19,9 +19,9 @@ public class UserDTO {
 	private String username;
 	private Date createdat;
 	private String authority;
-	
+
 	private List<AuthDTO> authorities;
-	
-	private String authCode;  // ÀÎÁõ¹øÈ£¸¦ ÀúÀåÇÒ ÇÊµå
+
+	private String authCode; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Êµï¿½
 
 }

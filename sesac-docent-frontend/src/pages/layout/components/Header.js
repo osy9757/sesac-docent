@@ -5,10 +5,12 @@ import { LinkBox, LowerHeaderLink, UpperHeaderLink } from "./LayoutLinks";
 import LogoSvg from "assets/logo_horizontal.svg";
 
 import { cn } from "utils/tailwind-merge";
+import { useAppSelector } from "store/store";
 
 export const Header = () => {
   const [height, setHeight] = useState(95);
   const [navFixed, setNavFixed] = useState(false);
+  const state = useAppSelector((state) => state.authReducer);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,11 +31,15 @@ export const Header = () => {
     <div className="w-full flex flex-col items-center justify-center bg-white">
       <div className="w-full h-[36px] bg-zinc-200 flex justify-center ">
         <div className="w-full max-w-[1300px] flex justify-end items-center gap-4">
-          {true && <UpperHeaderLink link="/admin" text="관리자" />}
-          {true && <UpperHeaderLink link="/myinfo" text="마이페이지" />}
-          {true && <UpperHeaderLink link="/logout" text="로그아웃" />}
-          {true && <UpperHeaderLink link="/register" text="회원가입" />}
-          {true && <UpperHeaderLink link="/login" text="로그인" />}
+          {state.role === "ROLE_ADMIN" && (
+            <UpperHeaderLink link="/admin" text="관리자" />
+          )}
+          {state.email && (
+            <UpperHeaderLink link="/myinfo" text="회원정보 수정" />
+          )}
+          {state.email && <UpperHeaderLink link="/" text="로그아웃" />}
+          {!state.email && <UpperHeaderLink link="/register" text="회원가입" />}
+          {!state.email && <UpperHeaderLink link="/login" text="로그인" />}
         </div>
       </div>
       <div

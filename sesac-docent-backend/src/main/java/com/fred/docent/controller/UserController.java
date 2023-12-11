@@ -1,9 +1,12 @@
 package com.fred.docent.controller;
 
-import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,18 +46,16 @@ public class UserController {
 	@Autowired
 	public BCryptPasswordEncoder encoder;
 
-	// È¸¿ø°¡ÀÔ
 	@PostMapping("/insert")
 	public ResponseEntity<String> insert(@RequestBody UserDTO dto) throws Exception {
 		log.info("insert member " + dto.toString());
 
 		String email = dto.getEmail();
 
-		// Áßº¹ÀÌ¸ŞÀÏ °Ë»ç
 		if (!service.dupId(email)) {
 			Map<String, String> response = new HashMap<>();
 			response.put("errorCode", "email");
-			response.put("errorMessage", "ÀÌ¹Ì Á¸ÀçÇÏ´Â ÀÌ¸ŞÀÏÀÔ´Ï´Ù.");
+			response.put("errorMessage", "ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.");
 			ObjectMapper objectMapper = new ObjectMapper();
 			String json = objectMapper.writeValueAsString(response);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -65,130 +65,194 @@ public class UserController {
 		service.insert(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	@GetMapping("/{email}")
-    public ResponseEntity<Object> dupIdCheck(@PathVariable String email) {
-        boolean idCheck = service.dupId(email);
-        
-        if (idCheck) {
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
-        }
-    }
+
+	@GetMapping("/{email:.+}")
+	public ResponseEntity<Map<String, Object>> dupIdCheck(@PathVariable String email) {
+		log.info(email);
+		boolean idCheck = service.dupId(email);
+		Map<String, Object> response = new HashMap<>();
+		log.info("hi");
+
+		if (idCheck) {
+			log.info("unique");
+			response.put("isUnique", true);
+			String authNumber = mailService.joinEmail(email);
+			response.put("authNumber", authNumber);
+			return ResponseEntity.status(HttpStatus.ACCEPTED)
+					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).body(response);
+		} else {
+			log.info("not unique");
+			response.put("isUnique", false);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).body(response);
+		}
+	}
 
 	@GetMapping("/mailCheck/{email:.+}")
 	@ResponseBody
 	public String mailCheck(@PathVariable String email) {
-		System.out.println("ÀÌ¸ŞÀÏ ÀÎÁõ ¿äÃ»ÀÌ µé¾î¿È!");
-		System.out.println("ÀÌ¸ŞÀÏ ÀÎÁõ ÀÌ¸ŞÀÏ : " + email);
+		System.out.println("ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½!");
+		System.out.println("ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ : " + email);
 		return mailService.joinEmail(email);
 	}
 
-	// È¸¿øÁ¤º¸ ¼öÁ¤(ºñ¹Ğ¹øÈ£)
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½Ğ¹ï¿½È£)
 	@PostMapping("/update")
 	public ResponseEntity<String> change(@RequestBody PasswordChangeDTO passwordChangeDTO) throws Exception {
-	    log.info("change request ");
-	    log.info("oldPassword: " + passwordChangeDTO.getOldPassword() + ", newPassword: " + passwordChangeDTO.getNewPassword());
+		log.info("change request ");
+		log.info("oldPassword: " + passwordChangeDTO.getOldPassword() + ", newPassword: "
+				+ passwordChangeDTO.getNewPassword());
 
-	    String email = passwordChangeDTO.getEmail();  // JSON µ¥ÀÌÅÍ¿¡¼­ email °ªÀ» °¡Á®¿É´Ï´Ù.
-	    UserDTO dto = service.readUserByEmail(email);
+		String email = passwordChangeDTO.getEmail(); // JSON ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ email ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½É´Ï´ï¿½.
+		UserDTO dto = service.readUserByEmail(email);
 
-	    if(dto != null && encoder.matches(passwordChangeDTO.getOldPassword(), dto.getPassword())) {
-	        String encryptedPassword = encoder.encode(passwordChangeDTO.getNewPassword());
-	        dto.setPassword(encryptedPassword);
-	        service.update(dto);
-	        return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Success\"}");
-	    }
+		if (dto != null && encoder.matches(passwordChangeDTO.getOldPassword(), dto.getPassword())) {
+			String encryptedPassword = encoder.encode(passwordChangeDTO.getNewPassword());
+			dto.setPassword(encryptedPassword);
+			service.update(dto);
+			return ResponseEntity.status(HttpStatus.OK).body("{\"message\": \"Success\"}");
+		}
 
-	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed\"}");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed\"}");
 	}
 
-
-
-	// È¸¿øÅ»Åğ
+	// È¸ï¿½ï¿½Å»ï¿½ï¿½
 	@PostMapping("/delete")
 	public ResponseEntity<Object> delete(@RequestBody UserDTO dto) {
-	    if (dto.getEmail() != null && encoder.matches(dto.getPassword(), service.readUserByEmail(dto.getEmail()).getPassword())) {
-	        service.delete(dto);
-	        return ResponseEntity.ok().body("{\"message\": \"Success\"}");
-	    }
+		if (dto.getEmail() != null
+				&& encoder.matches(dto.getPassword(), service.readUserByEmail(dto.getEmail()).getPassword())) {
+			service.delete(dto);
+			return ResponseEntity.ok().body("{\"message\": \"Success\"}");
+		}
 
-	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed\"}");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed\"}");
 	}
 
-
-	// ·Î±×ÀÎ
+	// ì´ë©”ì¼, ë¹„ë°€ë²ˆí˜¸ ì…ë ¥ì„ í†µí•œ ë¡œê·¸ì¸
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
-	    log.info("·Î±×ÀÎ ¿äÃ» " + loginDTO);
+	public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request,
+			HttpServletResponse response) {
 
-	    // ÀÔ·Â¹ŞÀº ÀÌ¸ŞÀÏ°ú ºñ¹Ğ¹øÈ£·Î DB¿¡¼­ »ç¿ëÀÚ Á¤º¸¸¦ °¡Á®¿É´Ï´Ù.
-	    UserDTO userDTO = service.readUserByEmail(loginDTO.getEmail());
+		log.info("ë¡œê·¸ì¸ ìš”ì²­ " + loginDTO);
 
-	    Map<String, Object> response = new HashMap<>();
-	    if (userDTO != null && encoder.matches(loginDTO.getPassword(), userDTO.getPassword())) {
-	        // ÀÌ¸ŞÀÏ°ú ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏ´Â °æ¿ì, ·Î±×ÀÎ ¼º°ø Ã³¸®¸¦ ÇÕ´Ï´Ù.
-	        session.setAttribute("userDTO", userDTO);
+		// ì•¼ë§¤
+		UserDTO userDTO = service.readUserByEmail(loginDTO.getEmail());
+		UserDTO userDTO2 = service.readNameByEmail(loginDTO.getEmail());
+		userDTO.setUsername(userDTO2.getUsername());
+		log.info(userDTO);
 
-	        // ·Î±×ÀÎ ¼º°ø ½Ã »ç¿ëÀÚÀÇ ±ÇÇÑ Á¤º¸¸¦ ÇÔ²² ÀÀ´ä º»¹®¿¡ Æ÷ÇÔ½ÃÅµ´Ï´Ù.
-	        response.put("message", "Success");
-	        response.put("authorities", userDTO.getAuthorities()); // »ç¿ëÀÚÀÇ ±ÇÇÑ Á¤º¸
-	        response.put("username", userDTO.getUsername()); // »ç¿ëÀÚÀÇ username
+		Map<String, Object> responseBody = new HashMap<>();
 
-	        return ResponseEntity.ok(response);
-	    } else {
-	        // ÀÌ¸ŞÀÏ°ú ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê´Â °æ¿ì, ·Î±×ÀÎ ½ÇÆĞ Ã³¸®¸¦ ÇÕ´Ï´Ù.
-	        response.put("message", "Failed");
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-	    }
+		if (userDTO != null && encoder.matches(loginDTO.getPassword(), userDTO.getPassword())) {
+			HttpSession session = request.getSession();
+			session.setAttribute("userDTO", userDTO);
+			String sessionId = session.getId();
+
+			// ì¿ í‚¤ ìƒì„±
+			Cookie cookie = new Cookie("JSESSIONID", sessionId);
+			cookie.setPath("/");
+			cookie.setHttpOnly(true);
+			response.addCookie(cookie);
+
+			session.setAttribute("userDTO", userDTO);
+			String newSessionId = session.getId();
+
+			responseBody.put("sessionId", newSessionId);
+			responseBody.put("message", "Success");
+			responseBody.put("authority", userDTO.getAuthority());
+			responseBody.put("username", userDTO.getUsername());
+			log.info(responseBody);
+			return ResponseEntity.ok(responseBody);
+		} else {
+			responseBody.put("message", "Failed");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+		}
 	}
 
+	@GetMapping("/loginBySessionId")
+	public ResponseEntity<Map<String, Object>> loginBySessionId(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
 
-	// ·Î±×ÀÎ ¿¡·¯
+		Map<String, Object> response = new HashMap<>();
+
+		if (session != null) {
+			String sessionIdFromCookie = Arrays.stream(request.getCookies())
+					.filter(cookie -> "JSESSIONID".equals(cookie.getName())).map(Cookie::getValue).findFirst()
+					.orElse(null);
+
+			if (sessionIdFromCookie != null && sessionIdFromCookie.equals(session.getId())) {
+				UserDTO userDTO = (UserDTO) session.getAttribute("userDTO"); // ì„¸ì…˜ì—ì„œ ì‚¬ìš©ì ì •ë³´ë¥¼ ê°€ì ¸ì˜µë‹ˆë‹¤.
+
+				if (userDTO != null) {
+					response.put("sessionId", sessionIdFromCookie);
+					response.put("message", "Success");
+					response.put("authority", userDTO.getAuthority());
+					response.put("username", userDTO.getUsername());
+					response.put("email", userDTO.getEmail());
+					log.info(response);
+					return ResponseEntity.ok(response);
+				}
+			}
+		}
+
+		response.put("message", "Failed");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+	}
+
+	// ë¡œê·¸ì•„ì›ƒ
+	@GetMapping("/logout")
+	public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		log.info("logout requested");
+
+		Map<String, Object> response = new HashMap<>();
+
+		if (session != null) {
+			session.invalidate();
+			response.put("message", "Logout Success");
+			log.info("logout success");
+			return ResponseEntity.ok(response);
+		} else {
+			response.put("message", "Logout Failed");
+			return ResponseEntity.ok(response);
+		}
+	}
+
+	// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/login-error")
 	public ResponseEntity<String> loginError() {
-		String errorMessage = "¾ÆÀÌµğ³ª ºñ¹Ğ¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä.";
+		String errorMessage = "ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½Ğ¹ï¿½È£ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + errorMessage + "\"}");
 	}
-	
-	// ·Î±×¾Æ¿ô
-	@GetMapping(value = "/logout", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<String> logout(HttpSession session) {
-		session.removeAttribute("email");
-		String message = "·Î±×¾Æ¿ô ¿äÃ»";
-		return new ResponseEntity<>(message, HttpStatus.OK);
-	}
-	
-	// ½ÃÅ¥¸®Æ¼ Á¢±Ù °ü·Ã
+
+	// ï¿½ï¿½Å¥ï¿½ï¿½Æ¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@GetMapping("/access-denied")
 	public ResponseEntity<String> accessDenied() {
 		String errorMessage = "Access denied. You do not have permission to access this page.";
 		return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
 	}
 
-	// ºñ¹Ğ¹øÈ£ Ã£±â
+	// ï¿½ï¿½Ğ¹ï¿½È£ Ã£ï¿½ï¿½
 	@PostMapping(value = "/findPassword", produces = "application/json;charset=UTF-8")
-	public ResponseEntity<Map<String, Object>> findPassword(@RequestBody UserDTO dto) {
+	public ResponseEntity<Map<String, Object>> findPassword(@RequestBody UserDTO dto) throws Exception {
 		String email = dto.getEmail();
 		String username = dto.getUsername();
 
-		// ÀÔ·ÂÇÑ Á¤º¸¿Í ÀÏÄ¡ÇÏ´Â »ç¿ëÀÚ¸¦ Á¶È¸ÇÕ´Ï´Ù.
 		UserDTO user = service.checkUser(username, email);
 
 		Map<String, Object> response = new HashMap<>();
 		if (user != null) {
-			// Á¤º¸°¡ ÀÏÄ¡ÇÏ¸é º¯°æ ÆûÀ¸·Î ÀÌµ¿ÇÕ´Ï´Ù.
+			String newPassword = mailService.findPassword(email);
 			response.put("message", "success");
 			response.put("user", user);
+			response.put("newPassword", newPassword);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			// »ç¿ëÀÚ°¡ ¾ø´Â °æ¿ì ¾Ë¸²À» Ãâ·ÂÇÏ°í findPassword ÆäÀÌÁö¸¦ ´Ù½Ã º¸¿©Áİ´Ï´Ù.
-			response.put("error", "È¸¿ø Á¤º¸¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
+			response.put("error", "ì¼ì¹˜í•˜ëŠ” ê³„ì • ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	// ºñ¹Ğ¹øÈ£ ¼öÁ¤ ¸¶ÀÌÆäÀÌÁö
+	// ï¿½ï¿½Ğ¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 }

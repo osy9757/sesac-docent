@@ -22,7 +22,7 @@
 		<result property="userid" column="user_id"/>
 		<result property="username" column="user_name"/>
 		<result property="createdat" column="created_at"/>
-		<collection property="authorities" resultMap="authList"/>
+		<result property="authority" column="authority"/>
 	</resultMap>
 	
 	<select id="read" resultMap="userDTO">
@@ -53,5 +53,15 @@
 	    select * from users
     	where email = #{email} and user_name = #{username}
 	</select>
-
+	
+	<select id="readNameByEmail" resultType="UserDTO">
+   		select user_name AS userName from users
+   		where email = #{email}
+	</select>
+	
+<!-- 	<select id="readNameByEmail" resultType="UserDTO">
+   		select user\_name from users
+	    where email = #{email} ESCAPE '\'
+	</select>
+ -->
 </mapper>

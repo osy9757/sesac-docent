@@ -34,7 +34,7 @@ export const AdminHeader = () => {
       </div>
       <div className="w-1/3 flex justify-end items-center gap-4 text-zinc-800">
         {true && <UpperHeaderLink link="/" text="고객페이지" />}
-        {true && <UpperHeaderLink link="/logout" text="로그아웃" />}
+        {true && <UpperHeaderLink link="/" text="로그아웃" />}
       </div>
     </div>
   );

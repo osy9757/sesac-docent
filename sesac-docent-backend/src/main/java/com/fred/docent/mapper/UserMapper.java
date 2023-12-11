@@ -18,9 +18,10 @@ public interface UserMapper {
 	public int dupId(String email);
 
 	public UserDTO readUserByEmail(String email); // email로 멤버 정보 가져오기
-	
+
 	public UserDTO checkUser(@Param("username") String username, @Param("email") String email);
-	
+
 	public UserDTO read(String email); // 회원 정보 읽어오기
 
+	public UserDTO readNameByEmail(String email);
 }

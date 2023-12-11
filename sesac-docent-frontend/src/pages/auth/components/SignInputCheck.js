@@ -1,16 +1,49 @@
 import api from "apis/api";
 import { X } from "lucide-react";
+import { useState } from "react";
+import { validateEmail } from "utils/validate-input";
 
 export const SignInputCheck = (props) => {
+  const [unique, setUnique] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const isValid = props.inputState?.hasError ? "invalid" : "normal";
   const colorVariants = {
     normal: "flex items-center gap-1 text-2xl font-semibold text-black",
     invalid: "flex items-center gap-1 text-2xl font-semibold text-rose-700",
   };
 
-  const checkHandler = (event) => {
+  const checkHandler = async (event) => {
     event.preventDefault();
-    props.setEmailUnique(true);
+
+    if (props.checkType === "emailUnique") {
+      if (!validateEmail(props.value)) {
+        return;
+      }
+      const response = await api.get(`/user/${props.value}`);
+      const isUnique = response.data.isUnique;
+
+      if (isUnique) {
+        setUnique(true);
+        setSubmitted(true);
+        props.setEmailUnique(true);
+        props.setServerAuthNumber(response.data.authNumber);
+        console.log("서버로부터 받은 인증 번호: ", response.data.authNumber);
+        console.log("This email is unique.");
+      } else {
+        setUnique(false);
+        setSubmitted(true);
+        props.setEmailUnique(false);
+        console.log("This email is duplicated.");
+      }
+    }
+
+    if (props.checkType === "authNumber") {
+      setSubmitted(true);
+      console.log("입력한 인증번호: ", props.value);
+      props.setAuthNumberValid(
+        props.value === props.serverAuthNumber ? true : false
+      );
+    }
   };
 
   return (
@@ -42,6 +75,30 @@ export const SignInputCheck = (props) => {
           {props.errorMessage}
         </p>
       )}
+      {props.checkType === "emailUnique" && unique && submitted && (
+        <p className="text-lg font-medium text-teal-500">
+          사용할 수 있는 이메일입니다.
+        </p>
+      )}
+      {props.checkType === "emailUnique" && !unique && submitted && (
+        <p className="text-lg font-medium text-rose-500">
+          이미 가입된 이메일입니다.
+        </p>
+      )}
+      {props.checkType === "authNumber" &&
+        props.authNumberValid &&
+        submitted && (
+          <p className="text-lg font-medium text-teal-500">
+            인증이 완료되었습니다.
+          </p>
+        )}
+      {props.checkType === "authNumber" &&
+        !props.authNumberValid &&
+        submitted && (
+          <p className="text-lg font-medium text-rose-500">
+            인증 번호가 일치하지 않습니다.
+          </p>
+        )}
     </div>
   );
 };

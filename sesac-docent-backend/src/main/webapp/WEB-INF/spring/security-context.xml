@@ -15,7 +15,7 @@
 					authentication-success-handler-ref="customLoginSuccessHandler"/>
 		<security:logout logout-success-url="/user/logout"/>
 		
-		<security:intercept-url pattern="/user/adminpage" access="hasRole('ROLE_ADMIN')"/>
+		<security:intercept-url pattern="/admin/*" access="hasRole('ROLE_ADMIN')"/>
 		<security:intercept-url pattern="/user/**" access="permitAll"/>
 		<security:csrf disabled="true"/>
 	</security:http>

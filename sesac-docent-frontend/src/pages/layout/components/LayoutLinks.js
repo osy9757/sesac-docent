@@ -5,12 +5,34 @@ import { IoMdPlay } from "react-icons/io";
 import { MenuContext } from "pages/layout/AdminLayout";
 
 import { cn } from "utils/tailwind-merge";
+import { useDispatch } from "react-redux";
+import { logout } from "store/features/auth-slice";
+import api from "apis/api";
 
 export const UpperHeaderLink = ({ link, text }) => {
+  const dispatch = useDispatch();
+
+  const logoutHandler = async () => {
+    if (text !== "로그아웃") {
+      return;
+    }
+
+    const response = await api.get("/user/logout");
+    if (response.data.message === "Logout Success") {
+      console.log(response.data.message);
+      document.cookie =
+        "JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      dispatch(logout());
+    } else {
+      console.log(response.data.message);
+    }
+  };
+
   return (
     <Link
       to={`${link}`}
       className="flex justify-center items-center gap-1 w-fit font-semibold"
+      onClick={logoutHandler}
     >
       <IoMdPlay size={12} />
       {text}
