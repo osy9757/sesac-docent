@@ -5,35 +5,72 @@
 
 	<insert id="insertPost"
 		parameterType="com.fred.docent.domain.InsertPostDTO">
-		CALL insert_post(
-		#{user_Id, jdbcType=NUMERIC},
-		#{exhibition_Id, jdbcType=NUMERIC},
-		#{category, jdbcType=NUMERIC},
-		#{title, jdbcType=VARCHAR},
-		#{content, jdbcType=CLOB},
-		#{reply_Id,
+		begin
+		insert_post(
+		#{postDTO.user_Id, jdbcType=NUMERIC},
+		#{postDTO.exhibition_Id, jdbcType=NUMERIC},
+		#{postDTO.category,
+		jdbcType=NUMERIC},
+		#{postDTO.title, jdbcType=VARCHAR},
+		#{postDTO.content,
+		jdbcType=CLOB},
+		#{postDTO.reply_Id,
 		jdbcType=NUMERIC}
 		)
+		end;
 	</insert>
 
+	<!-- Result Map 정의 -->
+	<resultMap id="PostResultMap"
+		type="com.fred.docent.domain.FetchPostsResponseDTO">
+		<result property="v_post_rank" column="post_rank" />
+		<result property="v_post_id" column="post_id" />
+		<result property="v_post_title" column="post_title" />
+		<result property="v_post_views" column="post_views" />
+		<result property="v_post_updated_at" column="post_updated_at" />
+		<result property="v_user_id" column="user_id" />
+		<result property="v_user_name" column="user_name" />
+		<result property="v_post_likes" column="post_likes" />
+		<result property="v_last_page" column="post_last_page" />
+	</resultMap>
+
+	<!-- fetchPosts 수정 -->
 	<select id="fetchPosts"
 		parameterType="com.fred.docent.domain.FetchPostsRequestDTO"
-		resultType="com.fred.docent.domain.FetchPostsResponseDTO">
-		CALL fetch_posts(
-		#{requestDTO.category, jdbcType=NUMERIC},
-		#{requestDTO.page_Size, jdbcType=NUMERIC},
-		#{requestDTO.page_Number, jdbcType=NUMERIC},
-		#{requestDTO.search_Title, jdbcType=VARCHAR}
-		)
+		resultMap="PostResultMap">
+		SELECT * FROM TABLE(fetch_posts(
+		#{requestDTO.p_category,
+		jdbcType=NUMERIC},
+		#{requestDTO.p_page_size, jdbcType=NUMERIC},
+		#{requestDTO.p_page_number, jdbcType=NUMERIC},
+		#{requestDTO.p_search_title, jdbcType=VARCHAR},
+		#{requestDTO.p_post_status, jdbcType=VARCHAR}
+		))
 	</select>
 
+
+	<!-- <select id="fetchPosts" parameterType="com.fred.docent.domain.FetchPostsRequestDTO" 
+		resultType="com.fred.docent.domain.FetchPostsResponseDTO"> CALL fetch_posts( 
+		#{requestDTO.p_category, jdbcType=NUMERIC}, #{requestDTO.p_page_size, jdbcType=NUMERIC}, 
+		#{requestDTO.p_page_number, jdbcType=NUMERIC}, #{requestDTO.p_search_title, 
+		jdbcType=VARCHAR} ) </select> -->
 	<select id="fetchPostDetails"
 		parameterType="com.fred.docent.domain.FetchPostDetailsRequestDTO"
 		resultType="com.fred.docent.domain.FetchPostDetailsResponseDTO">
-		CALL fetch_post_details(
-		#{post_Id, jdbcType=NUMERIC},
-		#{category, jdbcType=NUMERIC}
-		)
+		<choose>
+			<when test="requestDTO.category == 1">
+				SELECT * FROM TABLE(fetch_post_details_cat1(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+			</when>
+			<when test="requestDTO.category == 2">
+				SELECT * FROM TABLE(fetch_post_details_cat2(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+			</when>
+			<when test="requestDTO.category == 3">
+				SELECT * FROM TABLE(fetch_post_details_cat3(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+			</when>
+			<otherwise>
+				
+			</otherwise>
+		</choose>
 	</select>
 
 </mapper>

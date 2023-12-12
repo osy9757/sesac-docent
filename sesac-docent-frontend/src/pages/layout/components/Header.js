@@ -62,7 +62,7 @@ export const Header = () => {
         <nav className="w-full min-h-[64px] flex justify-center border-b border-black border-solid bg-white">
           <div className="w-full max-w-[1300px] flex justify-between mx-10">
             <div className="flex items-center gap-8">
-              <LowerHeaderLink link="#" text="공지사항" />
+              <LowerHeaderLink link="/notice" text="공지사항" />
               <LowerHeaderLink link="#" text="갤러리" />
               <LowerHeaderLink link="#" text="전시 일정" />
               <LowerHeaderLink link="#" text="작품 정보" />

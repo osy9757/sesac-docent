@@ -1,5 +1,7 @@
 package com.fred.docent.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

@@ -41,14 +41,15 @@ public class PostController {
         return new ResponseEntity<>("Post inserted successfully", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/list/{category}/{pageSize}/{pageNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/list/{p_category}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FetchPostsResponseDTO>> fetchPosts(
-            @PathVariable("category") int category,
-            @PathVariable("pageSize") int pageSize,
-            @PathVariable("pageNumber") int pageNumber,
-            @RequestParam(value = "searchTitle", required = false) String searchTitle) {
+            @PathVariable("p_category") int category,
+            @PathVariable("p_page_size") int pageSize,
+            @PathVariable("p_page_number") int pageNumber,
+            @RequestParam(value = "p_search_title", required = false) String searchTitle,
+            @RequestParam(value = "p_post_status", required = false) String postStatus) {
 
-        FetchPostsRequestDTO requestDTO = new FetchPostsRequestDTO(category, pageSize, pageNumber, searchTitle);
+        FetchPostsRequestDTO requestDTO = new FetchPostsRequestDTO(category, pageSize, pageNumber, searchTitle, postStatus);
         List<FetchPostsResponseDTO> postsResponse = postsService.fetchPosts(requestDTO);
         return new ResponseEntity<>(postsResponse, HttpStatus.OK);
     }
