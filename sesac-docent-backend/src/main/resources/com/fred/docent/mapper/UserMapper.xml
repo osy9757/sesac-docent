@@ -32,8 +32,8 @@
 	
 	<!-- 유저정보 가져오기 -->
  	<select id="readUserByEmail" resultType="UserDTO">
-	    select * from users 
-	    where email = #{email}
+	    select email, password, authority, user_name AS userName from users
+   		where email = #{email}
 	</select>
 
 	<!-- 회원탈퇴 -->
@@ -54,14 +54,5 @@
     	where email = #{email} and user_name = #{username}
 	</select>
 	
-	<select id="readNameByEmail" resultType="UserDTO">
-   		select user_name AS userName from users
-   		where email = #{email}
-	</select>
-	
-<!-- 	<select id="readNameByEmail" resultType="UserDTO">
-   		select user\_name from users
-	    where email = #{email} ESCAPE '\'
-	</select>
- -->
+
 </mapper>

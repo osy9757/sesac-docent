@@ -35,41 +35,37 @@ public class MailSendService {
 	}
 
 	public void makeRandomNumber() {
-		// 난수의 범위 100000 ~ 999999 (6자리 난수)
 		Random r = new Random();
 		int checkNum = r.nextInt(900000) + 100000;
-		System.out.println("인증번호 : " + checkNum);
+		System.out.println("verification code : " + checkNum);
 		authNumber = checkNum;
 	}
 
 	public void makeRandomPassword() {
-		// 난수의 범위 100000000 ~ 999999999 (9자리 난수)
 		Random r = new Random();
 		int checkNum2 = r.nextInt(900000000) + 100000000;
-		System.out.println("인증번호 : " + checkNum2);
+		System.out.println("verification code : " + checkNum2);
 		newPassword = checkNum2;
 	}
 
-	// 이메일 보내는 양식
 	public String joinEmail(String email) {
 		makeRandomNumber();
 		String setFrom = "hsuyeon607@gmail.com";
 		String toMail = email;
-		String title = "회원 가입 인증 이메일 입니다.";
-		String content = "홈페이지를 방문해주셔서 감사합니다." + "<br><br>" + "인증 번호는 " + authNumber + "입니다." + "<br>"
-				+ "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+		String title = "This is email for register verification.";
+		String content = "Welcome to visit our homepage." + "<br><br>" + "verification code: " + authNumber + "<br>"
+				+ "Please enter the verification code in the verification code field.";
 		mailSend(setFrom, toMail, title, content);
 		return Integer.toString(authNumber);
 	}
 
-	// 비밀번호 초기화 이메일
 	public String findPassword(String email) throws Exception {
 		makeRandomPassword();
 		String setFrom = "hsuyeon607@gmail.com";
 		String toMail = email;
-		String title = "새 비밀번호입니다.";
-		String content = "홈페이지를 방문해주셔서 감사합니다." + "<br><br>" + "새 비밀번호는 " + authNumber + "입니다." + "<br>"
-				+ "해당 비밀번호로 로그인해주세요.";
+		String title = "This is email for register verification.";
+		String content = "Welcome to visit our homepage." + "<br><br>" + "verification code: " + newPassword + "<br>"
+				+ "Please enter the verification code in the verification code field.";
 		mailSend(setFrom, toMail, title, content);
 
 		String encryptedPassword = encoder.encode(Integer.toString(newPassword));
@@ -81,7 +77,6 @@ public class MailSendService {
 		return Integer.toString(newPassword);
 	}
 
-	// �씠硫붿씪 �쟾�넚 硫붿냼�뱶
 	public void mailSend(String setFrom, String toMail, String title, String content) {
 		MimeMessage message = mailSender.createMimeMessage();
 

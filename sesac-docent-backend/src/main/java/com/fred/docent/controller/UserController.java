@@ -50,18 +50,6 @@ public class UserController {
 	public ResponseEntity<String> insert(@RequestBody UserDTO dto) throws Exception {
 		log.info("insert member " + dto.toString());
 
-		String email = dto.getEmail();
-
-		if (!service.dupId(email)) {
-			Map<String, String> response = new HashMap<>();
-			response.put("errorCode", "email");
-			response.put("errorMessage", "�̹� �����ϴ� �̸����Դϴ�.");
-			ObjectMapper objectMapper = new ObjectMapper();
-			String json = objectMapper.writeValueAsString(response);
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE).body(json);
-		}
-
 		service.insert(dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -71,7 +59,6 @@ public class UserController {
 		log.info(email);
 		boolean idCheck = service.dupId(email);
 		Map<String, Object> response = new HashMap<>();
-		log.info("hi");
 
 		if (idCheck) {
 			log.info("unique");
@@ -88,22 +75,13 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/mailCheck/{email:.+}")
-	@ResponseBody
-	public String mailCheck(@PathVariable String email) {
-		System.out.println("�̸��� ���� ��û�� ����!");
-		System.out.println("�̸��� ���� �̸��� : " + email);
-		return mailService.joinEmail(email);
-	}
-
-	// ȸ������ ����(��й�ȣ)
 	@PostMapping("/update")
 	public ResponseEntity<String> change(@RequestBody PasswordChangeDTO passwordChangeDTO) throws Exception {
 		log.info("change request ");
 		log.info("oldPassword: " + passwordChangeDTO.getOldPassword() + ", newPassword: "
 				+ passwordChangeDTO.getNewPassword());
 
-		String email = passwordChangeDTO.getEmail(); // JSON �����Ϳ��� email ���� �����ɴϴ�.
+		String email = passwordChangeDTO.getEmail();
 		UserDTO dto = service.readUserByEmail(email);
 
 		if (dto != null && encoder.matches(passwordChangeDTO.getOldPassword(), dto.getPassword())) {
@@ -116,7 +94,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed\"}");
 	}
 
-	// ȸ��Ż��
 	@PostMapping("/delete")
 	public ResponseEntity<Object> delete(@RequestBody UserDTO dto) {
 		if (dto.getEmail() != null
@@ -128,18 +105,13 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"message\": \"Failed\"}");
 	}
 
-	// 이메일, 비밀번호 입력을 통한 로그인
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		log.info("로그인 요청 " + loginDTO);
+		log.info("login request " + loginDTO);
 
-		// 야매
 		UserDTO userDTO = service.readUserByEmail(loginDTO.getEmail());
-		UserDTO userDTO2 = service.readNameByEmail(loginDTO.getEmail());
-		userDTO.setUsername(userDTO2.getUsername());
-		log.info(userDTO);
 
 		Map<String, Object> responseBody = new HashMap<>();
 
@@ -148,7 +120,6 @@ public class UserController {
 			session.setAttribute("userDTO", userDTO);
 			String sessionId = session.getId();
 
-			// 쿠키 생성
 			Cookie cookie = new Cookie("JSESSIONID", sessionId);
 			cookie.setPath("/");
 			cookie.setHttpOnly(true);
@@ -162,6 +133,7 @@ public class UserController {
 			responseBody.put("authority", userDTO.getAuthority());
 			responseBody.put("username", userDTO.getUsername());
 			log.info(responseBody);
+			
 			return ResponseEntity.ok(responseBody);
 		} else {
 			responseBody.put("message", "Failed");
@@ -169,6 +141,7 @@ public class UserController {
 		}
 	}
 
+	
 	@GetMapping("/loginBySessionId")
 	public ResponseEntity<Map<String, Object>> loginBySessionId(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
@@ -181,7 +154,7 @@ public class UserController {
 					.orElse(null);
 
 			if (sessionIdFromCookie != null && sessionIdFromCookie.equals(session.getId())) {
-				UserDTO userDTO = (UserDTO) session.getAttribute("userDTO"); // 세션에서 사용자 정보를 가져옵니다.
+				UserDTO userDTO = (UserDTO) session.getAttribute("userDTO");
 
 				if (userDTO != null) {
 					response.put("sessionId", sessionIdFromCookie);
@@ -199,7 +172,6 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 	}
 
-	// 로그아웃
 	@GetMapping("/logout")
 	public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
@@ -218,21 +190,18 @@ public class UserController {
 		}
 	}
 
-	// �α��� ����
 	@GetMapping("/login-error")
 	public ResponseEntity<String> loginError() {
-		String errorMessage = "���̵� ��й�ȣ�� Ȯ�����ּ���.";
+		String errorMessage = "Please check your email or password.";
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"" + errorMessage + "\"}");
 	}
 
-	// ��ť��Ƽ ���� ����
-	@GetMapping("/access-denied")
-	public ResponseEntity<String> accessDenied() {
-		String errorMessage = "Access denied. You do not have permission to access this page.";
-		return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
-	}
+//	@GetMapping("/access-denied")
+//	public ResponseEntity<String> accessDenied() {
+//		String errorMessage = "Access denied. You do not have permission to access this page.";
+//		return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+//	}
 
-	// ��й�ȣ ã��
 	@PostMapping(value = "/findPassword", produces = "application/json;charset=UTF-8")
 	public ResponseEntity<Map<String, Object>> findPassword(@RequestBody UserDTO dto) throws Exception {
 		String email = dto.getEmail();
@@ -248,11 +217,10 @@ public class UserController {
 			response.put("newPassword", newPassword);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
-			response.put("error", "일치하는 계정 정보가 없습니다.");
+			response.put("error", "Please check user information.");
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	// ��й�ȣ ���� ����������
 
 }
