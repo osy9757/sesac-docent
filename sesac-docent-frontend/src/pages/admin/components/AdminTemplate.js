@@ -6,6 +6,7 @@ import { PostsTableRatio } from "./PostsTableRatio";
 import { PostsTableHead } from "./PostsTableHead";
 import { PostsRow } from "./PostsTableRow";
 import { DUMMY_POST } from "./DUMMY_POST";
+import { Trash } from "lucide-react";
 
 export const AdminTemplate = ({ type, title, buttonName }) => {
   const navigate = useNavigate();
@@ -64,35 +65,46 @@ export const AdminTemplate = ({ type, title, buttonName }) => {
     <div className="w-full h-full flex justify-center items-start p-5">
       <div className="w-full h-full p-10 rounded-xl bg-white flex flex-col justify-start items-center gap-8">
         <PostsTableTitle title={title} buttonName={buttonName} />
-        <table className="w-full">
-          <colgroup>
-            <PostsTableRatio />
-          </colgroup>
-          <thead>
-            <PostsTableHead
-              totalClickHandler={totalClickHandler}
-              first="번호"
-              second="상태"
-              third="이름"
-              fourth="제목"
-              fifth="날짜"
-            />
-          </thead>
-          <tbody style={{ height: postsPerPage * 41 + "px" }}>
-            {posts.map((post) => (
-              <PostsRow
-                key={post.id}
-                id={post.id}
-                status={post.status}
-                name={post.name}
-                title={post.title}
-                date={post.date}
-                checkboxClickHandler={checkboxClickHandler}
-                allChecked={allChecked}
+        <div className="w-full flex flex-col relative">
+          {checkedPosts.length >= 1 && (
+            <div className="absolute -top-14 w-full h-14 py-2 px-6 flex justify-between items-center bg-zinc-200 rounded-t-md transition">
+              <p>{`${checkedPosts.length}개 선택`}</p>
+              <div className="flex gap-1">
+                <Trash />
+                <p className="text-rose-500">삭제</p>
+              </div>
+            </div>
+          )}
+          <table className="w-full">
+            <colgroup>
+              <PostsTableRatio />
+            </colgroup>
+            <thead>
+              <PostsTableHead
+                totalClickHandler={totalClickHandler}
+                first="번호"
+                second="상태"
+                third="이름"
+                fourth="제목"
+                fifth="날짜"
               />
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {posts.map((post) => (
+                <PostsRow
+                  key={post.id}
+                  id={post.id}
+                  status={post.status}
+                  name={post.name}
+                  title={post.title}
+                  date={post.date}
+                  checkboxClickHandler={checkboxClickHandler}
+                  allChecked={allChecked}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="w-full flex justify-center items-center">
           <div className="mx-auto flex gap-5 text-xl">
             {pageStart > 0 && (

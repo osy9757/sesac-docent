@@ -7,7 +7,7 @@ const AdminHome = () => {
 
   useEffect(() => {
     if (!params.pageNumber) {
-      navigate("/admin/inquiry/page/1");
+      navigate("/admin/inquiry/new/page/1");
     }
   }, [navigate, params.pageNumber]);
 

@@ -30,7 +30,7 @@ export const DUMMY_POST = [
   {
     id: 6,
     status: "활성",
-    name: "오명선",
+    name: "송원선",
     title: "라랄라",
     date: "2024. 04. 25. 오전 10시 30분",
   },
@@ -65,17 +65,17 @@ export const DUMMY_POST = [
   {
     id: 16,
     status: "활성",
-    name: "오명선",
+    name: "송원선",
     title: "라랄라",
     date: "2024. 04. 25. 오전 10시 30분",
   },
-  {
-    id: 102021,
-    status: "활성",
-    name: "김민재",
-    title: "도와주세요",
-    date: "2023. 12. 25. 오전 10시 30분",
-  },
+  // {
+  //   id: 102021,
+  //   status: "활성",
+  //   name: "김민재",
+  //   title: "도와주세요",
+  //   date: "2023. 12. 25. 오전 10시 30분",
+  // },
   // {
   //   id: 122211,
   //   status: "활성",

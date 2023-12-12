@@ -28,18 +28,18 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class PostController {
 
-    private final PostsService postsService;
+	private final PostsService postsService;
 
-    @Autowired
-    public PostController(PostsService postsService) {
-        this.postsService = postsService;
-    }
+	@Autowired
+	public PostController(PostsService postsService) {
+		this.postsService = postsService;
+	}
 
-    @PostMapping(value = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> insertPost(@RequestBody InsertPostDTO postDTO) {
-        postsService.insertPost(postDTO);
-        return new ResponseEntity<>("Post inserted successfully", HttpStatus.OK);
-    }
+	@PostMapping(value = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> insertPost(@RequestBody InsertPostDTO postDTO) {
+		postsService.insertPost(postDTO);
+		return new ResponseEntity<>("Post inserted successfully", HttpStatus.OK);
+	}
 
     @GetMapping(value = "/list/{p_category}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FetchPostsResponseDTO>> fetchPosts(
@@ -54,17 +54,16 @@ public class PostController {
         return new ResponseEntity<>(postsResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/details/{postId}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FetchPostDetailsResponseDTO> fetchPostDetails(
-            @PathVariable("postId") Long postId,
-            @PathVariable("category") Integer category) {
+	@GetMapping(value = "/details/{postId}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<FetchPostDetailsResponseDTO> fetchPostDetails(@PathVariable("postId") Long postId,
+			@PathVariable("category") Integer category) {
 
-        FetchPostDetailsRequestDTO requestDTO = new FetchPostDetailsRequestDTO(postId, category);
-        FetchPostDetailsResponseDTO postDetails = postsService.fetchPostDetails(requestDTO);
-        if (postDetails != null) {
-            return new ResponseEntity<>(postDetails, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+		FetchPostDetailsRequestDTO requestDTO = new FetchPostDetailsRequestDTO(postId, category);
+		FetchPostDetailsResponseDTO postDetails = postsService.fetchPostDetails(requestDTO);
+		if (postDetails != null) {
+			return new ResponseEntity<>(postDetails, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 }

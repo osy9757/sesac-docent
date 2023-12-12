@@ -7,7 +7,7 @@ export const PostsTableHead = ({
   fifth,
 }) => {
   return (
-    <tr className="border-b border-t border-zinc-400 bg-zinc-200/75">
+    <tr className="border-b border-t border-zinc-400 bg-zinc-100">
       <th scope="col">
         <input
           type="checkbox"
