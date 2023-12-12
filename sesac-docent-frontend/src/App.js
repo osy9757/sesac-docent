@@ -14,11 +14,10 @@ import AdminGallery from "pages/admin/AdminGallery";
 import AdminArtist from "pages/admin/AdminArtist";
 import AdminInquiry from "pages/admin/AdminInquiry";
 import MyInfo from "pages/auth/MyInfo";
-import Notice from "pages/notices/PostsTable"
-import { Provider } from "react-redux";
+// import Notice from "pages/notices/PostsTable";
 import { ReduxProvider } from "store/provider";
 import FindPassword from "pages/auth/FindPassword";
-import NoticeBoard from "pages/board/NoticeBoard";
+import NoticeWrite from "pages/board/NoticeWrite";
 
 const adminRoutes = [
   { name: "user", component: <AdminUser /> },
@@ -38,9 +37,15 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "myinfo", element: <MyInfo /> },
-      { path: "notice", element: <Notice /> },
+      // { path: "notice2", element: <Notice /> },
       { path: "findPassword", element: <FindPassword /> },
-      { path: "notice", element: <NoticeBoard /> },
+      {
+        path: "notice",
+        children: [
+          { index: true, element: <NoticeWrite /> },
+          { path: "write", element: <NoticeWrite /> },
+        ],
+      },
     ],
   },
   {

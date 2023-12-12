@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { DUMMY_POST } from "./components/DUMMY_POST";
+// import { DUMMY_POST } from "./components/DUMMY_POST";
 import { PostsTableTitle } from "./components/PostsTableTitle";
 import { Search, Trash2 } from "lucide-react";
 import { PostsTableRatio } from "./components/PostsTableRatio";
@@ -8,7 +8,6 @@ import { PostsTableHead } from "./components/PostsTableHead";
 import { PostsRow } from "./components/PostsTableRow";
 import api from "apis/api";
 import { cn } from "utils/tailwind-merge";
-import { IoMdQrScanner } from "react-icons/io";
 
 const pageGroupSize = 10;
 const pageSize = 10;
