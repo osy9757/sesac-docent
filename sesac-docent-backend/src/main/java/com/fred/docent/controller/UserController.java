@@ -1,7 +1,5 @@
 package com.fred.docent.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fred.docent.domain.LoginDTO;
 import com.fred.docent.domain.PasswordChangeDTO;
 import com.fred.docent.domain.UserDTO;
@@ -124,7 +120,7 @@ public class UserController {
 
 			Cookie cookie = new Cookie("JSESSIONID", sessionId);
 			cookie.setPath("/");
-			cookie.setHttpOnly(true);
+			cookie.setHttpOnly(false);
 			response.addCookie(cookie);
 
 			session.setAttribute("userDTO", userDTO);
@@ -134,8 +130,9 @@ public class UserController {
 			responseBody.put("message", "Success");
 			responseBody.put("authority", userDTO.getAuthority());
 			responseBody.put("username", userDTO.getUsername());
+			responseBody.put("userId", userDTO.getUserid());
 			log.info(responseBody);
-			
+
 			return ResponseEntity.ok(responseBody);
 		} else {
 			responseBody.put("message", "Failed");
@@ -143,7 +140,6 @@ public class UserController {
 		}
 	}
 
-	
 	@GetMapping("/loginBySessionId")
 	public ResponseEntity<Map<String, Object>> loginBySessionId(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
@@ -164,6 +160,7 @@ public class UserController {
 					response.put("authority", userDTO.getAuthority());
 					response.put("username", userDTO.getUsername());
 					response.put("email", userDTO.getEmail());
+					response.put("userId", userDTO.getUserid());
 					log.info(response);
 					return ResponseEntity.ok(response);
 				}
@@ -223,6 +220,5 @@ public class UserController {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-
 
 }

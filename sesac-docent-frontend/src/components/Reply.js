@@ -41,7 +41,7 @@ export const Reply = ({
             <div className="flex flex-col justify-center gap-2 text-sm">
               <div className="flex items-center gap-3">
                 <div className="w-fit h-fit p-1 px-2 border border-black text-base hover:bg-black hover:text-white transition cursor-pointer">
-                  <p>댓글 1</p>
+                  <p>댓글</p>
                 </div>
                 <p className="text-xl font-semibold">{username}</p>
               </div>

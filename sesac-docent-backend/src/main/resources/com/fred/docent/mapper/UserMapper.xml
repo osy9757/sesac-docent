@@ -32,7 +32,7 @@
 	
 	<!-- 유저정보 가져오기 -->
  	<select id="readUserByEmail" resultType="UserDTO">
-	    select email, password, authority, user_name AS userName from users
+	    select email, password, authority, user_name AS userName, user_id AS userId from users
    		where email = #{email}
 	</select>
 

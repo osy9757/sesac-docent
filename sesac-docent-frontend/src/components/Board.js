@@ -4,6 +4,7 @@ import { Search } from "lucide-react";
 
 import api from "apis/api";
 import { cn } from "utils/tailwind-merge";
+import { useAppSelector } from "store/store";
 
 const pageGroupSize = 10;
 const pageSize = 10;
@@ -12,6 +13,8 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
   const navigate = useNavigate();
   const params = useParams();
   const pageNumberParams = params.pageNumber;
+
+  const state = useAppSelector((state) => state.authReducer);
 
   // http://localhost:3000/notice 접속 시
   // http://localhost:3000/notice/page/1 리다이렉트
@@ -133,6 +136,10 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
     navigate(`/${categoryENG}/post/${postId}`);
   };
 
+  const showWrite =
+    categoryENG !== "notice" ||
+    (categoryENG === "notice" && state.role === "ROLE_ADMIN");
+
   return (
     <div className="w-full h-full flex justify-center items-start p-5 my-20">
       <div className="w-full max-w-[1300px] h-full px-10 py-5 rounded-xl bg-white flex flex-col justify-start items-center gap-6">
@@ -142,12 +149,14 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
             {categoryKOR}
           </p>
           <div className="w-1/5 flex justify-end">
-            <button
-              className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
-              onClick={writeClickHandler}
-            >
-              글쓰기
-            </button>
+            {showWrite && (
+              <button
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
+                onClick={writeClickHandler}
+              >
+                글쓰기
+              </button>
+            )}
           </div>
         </div>
         <div className="w-full flex flex-col relative">
