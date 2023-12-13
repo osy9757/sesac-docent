@@ -29,15 +29,16 @@
 		post_id = #{postDTO.post_id}
 	</update>
 
-	<update id="deletePost" parameterType="UpdatePostDTO">
+	<update id="deletePost" parameterType="DeletePostsDTO">
 		UPDATE posts
 		SET
-		post_valid
-		= #{postDTO.post_valid},
+		post_valid = 0,
 		post_updated_at = SYSDATE
-		WHERE
-		post_id =
-		#{postDTO.post_id}
+		WHERE post_id IN
+		<foreach item="id" collection="postDTO.post_ids" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
 	</update>
 
 

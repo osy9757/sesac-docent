@@ -2,6 +2,7 @@ package com.fred.docent.service;
 
 import java.util.List;
 
+import com.fred.docent.domain.DeletePostsDTO;
 import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
@@ -16,7 +17,7 @@ public interface PostsService {
 	
 	void updatePost(UpdatePostDTO postDTO);
 	
-	void deletePost(UpdatePostDTO postDTO);
+	void deletePost(DeletePostsDTO postDTO);
 
 	List<FetchPostsResponseDTO> fetchPosts(FetchPostsRequestDTO requestDTO);
 

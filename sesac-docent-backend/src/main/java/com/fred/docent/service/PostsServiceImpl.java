@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fred.docent.domain.DeletePostsDTO;
 import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
@@ -40,7 +41,7 @@ public class PostsServiceImpl implements PostsService {
 	}
 	
 	@Override
-	public void deletePost(UpdatePostDTO postDTO) {
+	public void deletePost(DeletePostsDTO postDTO) {
 		log.info("delete post: " + postDTO);
 		postMapper.deletePost(postDTO);
 	}

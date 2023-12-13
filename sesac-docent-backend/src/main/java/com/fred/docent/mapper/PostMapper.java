@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.fred.docent.domain.DeletePostsDTO;
 import com.fred.docent.domain.FetchArtCollectionResponseDTO;
 import com.fred.docent.domain.FetchPostDetailsRequestDTO;
 import com.fred.docent.domain.FetchPostDetailsResponseDTO;
@@ -20,7 +21,7 @@ public interface PostMapper {
 	
 	void updatePost(@Param("postDTO") UpdatePostDTO postDTO);
 	
-	void deletePost(@Param("postDTO") UpdatePostDTO postDTO);
+	void deletePost(@Param("postDTO") DeletePostsDTO postDTO);
 
 	List<FetchPostsResponseDTO> fetchPosts(@Param("requestDTO") FetchPostsRequestDTO requestDTO);
 
