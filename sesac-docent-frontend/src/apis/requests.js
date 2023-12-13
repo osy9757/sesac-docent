@@ -22,7 +22,6 @@ export const searchPosts = async (
   try {
     const URI = `/posts/list/${category}/${pageSize}/${pageNumber}?p_search_title=${searchCriteria}`;
     const response = await api.get(URI);
-    console.log(URI);
     console.log(response.data);
 
     return response.data;
@@ -35,7 +34,6 @@ export const deletePosts = async (postIds) => {
   try {
     const URI = `/posts/delete`;
     const response = await api.post(URI, { post_ids: postIds });
-    console.log(URI);
     console.log(response.data);
 
     return response.data;

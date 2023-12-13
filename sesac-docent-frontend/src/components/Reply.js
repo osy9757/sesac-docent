@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import sanitize from "dompurify";
 import api from "apis/api";
 import { Heart, HeartOff } from "lucide-react";
 
@@ -47,7 +46,7 @@ export const Reply = ({
               </div>
               <p className="text-zinc-500">{date}</p>
             </div>
-            <button
+            {/* <button
               className="flex gap-2 items-center"
               onClick={heartClickHandler}
             >
@@ -61,7 +60,7 @@ export const Reply = ({
                 <Heart size={30} />
               )}
               <p className="text-lg">{likeCount}</p>
-            </button>
+            </button> */}
           </div>
           <p className="text-lg">{content}</p>
         </div>

@@ -55,6 +55,10 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
     }
   };
 
+  const showReplyWrite =
+    categoryENG !== "inquiry" ||
+    (categoryENG === "inquiry" && state.role === "ROLE_ADMIN");
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-5 my-20 gap-4">
       {/* title 영역 */}
@@ -192,32 +196,34 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
         )}
       </div>
       {/* reply write 영역 */}
-      <div className="w-full max-w-[1000px] px-10 py-5 flex justify-center">
-        <form
-          className="w-full max-w-[1000px] p-5 border border-black flex flex-col gap-4"
-          onSubmit={replySubmitHandler}
-        >
-          <div className="flex justify-between items-center">
-            <label htmlFor="newReply" className="text-lg font-semibold pl-2">
-              새 댓글
-            </label>
-            <button
-              type="submit"
-              className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
-            >
-              입력
-            </button>
-          </div>
-          <textarea
-            name="newReply"
-            className="w-full p-5 h-40 border border-zinc-300"
-            placeholder="댓글을 작성하려면 로그인해주세요."
-            value={newReply}
-            onChange={(event) => setNewReply(event.target.value)}
-          ></textarea>
-          <div className="flex justify-end"></div>
-        </form>
-      </div>
+      {showReplyWrite && (
+        <div className="w-full max-w-[1000px] px-10 py-5 flex justify-center">
+          <form
+            className="w-full max-w-[1000px] p-5 border border-black flex flex-col gap-4"
+            onSubmit={replySubmitHandler}
+          >
+            <div className="flex justify-between items-center">
+              <label htmlFor="newReply" className="text-lg font-semibold pl-2">
+                새 댓글
+              </label>
+              <button
+                type="submit"
+                className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
+              >
+                입력
+              </button>
+            </div>
+            <textarea
+              name="newReply"
+              className="w-full p-5 h-40 border border-zinc-300"
+              placeholder="댓글을 작성하려면 로그인해주세요."
+              value={newReply}
+              onChange={(event) => setNewReply(event.target.value)}
+            ></textarea>
+            <div className="flex justify-end"></div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

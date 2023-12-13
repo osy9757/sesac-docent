@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { Search } from "lucide-react";
 
 import api from "apis/api";
 import { cn } from "utils/tailwind-merge";
 import { useAppSelector } from "store/store";
+import { numberToDate } from "utils/format-date";
+import { searchPosts } from "apis/requests";
 
 const pageGroupSize = 10;
 const pageSize = 10;
@@ -32,6 +39,7 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageGroup, setPageGroup] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setCurrentPage(pageNumberParams);
@@ -64,6 +72,30 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
       return;
     }
 
+    if (searchParams.get("search")) {
+      const func = async () => {
+        const data = await searchPosts(
+          parseInt(categoryNUM),
+          pageSize,
+          1,
+          searchCriteria
+        );
+        const updatedData = data.map((post) => {
+          return {
+            ...post,
+            v_post_updated_at: numberToDate(post.v_post_updated_at),
+          };
+        });
+        setLastPage(updatedData[0].v_last_page);
+        setPosts(updatedData);
+      };
+
+      func();
+      return;
+    }
+
+    setCurrentPage(pageNumberParams);
+
     // 즉시 실행 함수
     (async () => {
       // REST API
@@ -73,21 +105,12 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
 
       // 날짜 포맷 변환
       const updatedPosts = response.data.map((post) => {
-        const timestamp = post.v_post_updated_at;
-        const date = new Date(timestamp);
-
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = date.getSeconds().toString().padStart(2, "0");
-
         return {
           ...post,
-          v_post_updated_at: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+          v_post_updated_at: numberToDate(post.v_post_updated_at),
         };
       });
+      console.log(updatedPosts);
 
       // 현재 페이지 posts 설정
       setLastPage(updatedPosts[0].v_last_page);
@@ -95,7 +118,7 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
     })();
 
     // 페이지가 바뀔 때마다 수행
-  }, [pageNumberParams, categoryNUM]);
+  }, [pageNumberParams, categoryNUM, searchParams]);
 
   // 다음 페이지
   const handleNextPageGroup = () => {
@@ -137,7 +160,7 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
   };
 
   const showWrite =
-    categoryENG !== "notice" ||
+    (categoryENG !== "notice" && state.role) ||
     (categoryENG === "notice" && state.role === "ROLE_ADMIN");
 
   return (
@@ -195,7 +218,7 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
                     {post.v_user_name}
                   </td>
                   <td className="py-2 px-4">{post.v_post_title}</td>
-                  <td className="py-2 px-4">{post.v_post_content}</td>
+                  <td className="py-2 px-4">{post.v_post_updated_at}</td>
                 </tr>
               ))}
             </tbody>
@@ -234,7 +257,11 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
               return (
                 <Link
                   key={pageNumber}
-                  to={`/${categoryENG}/page/${pageNumber}`}
+                  to={`/${categoryENG}/page/${pageNumber}${
+                    searchParams.get("search")
+                      ? `?search=${searchParams.get("search")}`
+                      : ""
+                  }`}
                   className={cn(
                     "text-xl hover:underline",
                     isCurrentPage && "font-semibold text-teal-600 underline"

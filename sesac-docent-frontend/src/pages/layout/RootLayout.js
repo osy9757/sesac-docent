@@ -11,7 +11,6 @@ import { useAppSelector } from "store/store";
 const RootLayout = () => {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.authReducer);
-  console.log(state.userId);
 
   const hasValidSessionId = () => {
     const sessionId = document.cookie

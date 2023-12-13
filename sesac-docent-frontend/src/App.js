@@ -6,7 +6,7 @@ import Register from "pages/auth/Register";
 import RootLayout from "pages/layout/RootLayout";
 import AdminLayout from "pages/layout/AdminLayout";
 import AdminPost from "pages/admin/AdminPost";
-import AdminPiece from "pages/admin/AdminPiece";
+import AdminArtwork from "pages/admin/AdminArtwork";
 import AdminHome from "pages/admin/AdminHome";
 import AdminUser from "pages/admin/AdminUser";
 import AdminExhibition from "pages/admin/AdminExhibition";
@@ -36,7 +36,7 @@ const adminRoutes = [
   { name: "gallery", component: <AdminGallery /> },
   { name: "exhibition", component: <AdminExhibition /> },
   { name: "artist", component: <AdminArtist /> },
-  { name: "piece", component: <AdminPiece /> },
+  { name: "artwork", component: <AdminArtwork /> },
 ];
 
 const router = createBrowserRouter([
@@ -48,7 +48,6 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "myinfo", element: <MyInfo /> },
-      // { path: "notice2", element: <Notice /> },
       { path: "findPassword", element: <FindPassword /> },
       {
         path: "notice",

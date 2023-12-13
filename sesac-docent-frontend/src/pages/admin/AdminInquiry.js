@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Link,
-  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -14,6 +13,7 @@ import { PostsTableData } from "./components/PostsTableData";
 import { deletePosts, searchPosts } from "apis/requests";
 import { cn } from "utils/tailwind-merge";
 import api from "apis/api";
+import { numberToDate } from "utils/format-date";
 
 const pageGroupSize = 10;
 const pageSize = 10;
@@ -40,7 +40,7 @@ const AdminInquiry = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageGroup, setPageGroup] = useState([]);
   const [searchCriteria, setSearchCriteria] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const headboxRef = useRef();
 
   useEffect(() => {
@@ -54,8 +54,15 @@ const AdminInquiry = () => {
       console.log(searchParams.get("search"));
       const func = async () => {
         const data = await searchPosts(3, pageSize, 1, searchCriteria);
-        setLastPage(data[0].v_last_page);
-        setPosts(data);
+
+        const updatedData = data.data.map((post) => {
+          return {
+            ...post,
+            v_post_updated_at: numberToDate(post.v_post_updated_at),
+          };
+        });
+        setLastPage(updatedData[0].v_last_page);
+        setPosts(updatedData);
       };
 
       func();
@@ -72,19 +79,9 @@ const AdminInquiry = () => {
       const response = await api.get(URI);
 
       const updatedPosts = response.data.map((post) => {
-        const timestamp = post.v_post_updated_at;
-        const date = new Date(timestamp);
-
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        const seconds = date.getSeconds().toString().padStart(2, "0");
-
         return {
           ...post,
-          v_post_updated_at: `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`,
+          v_post_updated_at: numberToDate(post.v_post_updated_at),
         };
       });
 
@@ -93,7 +90,8 @@ const AdminInquiry = () => {
     };
 
     fetchPosts();
-  }, [inqCateParams, pageNumberParams, searchParams, searchCriteria]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inqCateParams, pageNumberParams, searchParams]);
 
   useEffect(() => {
     setCheckedPosts([]);

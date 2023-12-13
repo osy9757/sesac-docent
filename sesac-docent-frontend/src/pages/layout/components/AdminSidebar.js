@@ -39,7 +39,7 @@ export const AdminSidebar = () => {
         icon={<Presentation />}
       />
       <SidebarLink link="/admin/artist" text="작가 관리" icon={<Brush />} />
-      <SidebarLink link="/admin/piece" text="작품 관리" icon={<Image />} />
+      <SidebarLink link="/admin/artwork" text="작품 관리" icon={<Image />} />
     </div>
   );
 };
