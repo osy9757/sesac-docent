@@ -47,7 +47,7 @@ export const Header = () => {
           navFixed ? "w-full block h-[160px]" : "w-full hidden h-[124px]"
         )}
       ></div>
-      <div className={cn("w-full bg-white", navFixed && "fixed top-0 z-10")}>
+      <div className={cn("w-full bg-white", navFixed && "fixed top-0 z-50")}>
         <div className="w-full min-h-[96px] bg-white flex justify-center border-b border-black border-solid">
           <div className="w-full max-w-[1300px] flex justify-between items-center mx-10">
             <Link to="/" className="flex items-center my-4 select-none">
