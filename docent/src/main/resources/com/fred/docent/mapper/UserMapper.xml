@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fred.docent.mapper.UserMapper">
+
+	<!-- 회원가입 -->
+	<insert id="insert">
+		insert into users(user_id, email, password, user_name)
+		values(seq_users.NEXTVAL, #{email}, #{password}, #{username})
+	</insert>
+
+	<!-- 중복 아이디 체크 -->
+	<select id="dupId" resultType="int">
+		select count(*) from users 
+		where email=#{email}
+	</select>
+
+	<!-- 로그인  -->
+    <resultMap type="UserDTO" id="userDTO">
+		<!-- property는 DTO 변수명이랑 맞추고, column은 db 변수명이랑 맞추면 된다. -->
+		<id property="email" column="userid"/> 
+		<result property="password" column="password"/>
+		<result property="userid" column="user_id"/>
+		<result property="username" column="user_name"/>
+		<result property="createdat" column="created_at"/>
+		<collection property="authorities" resultMap="authList"/>
+	</resultMap>
+	
+	<select id="read" resultMap="userDTO">
+		select * from users
+		where email = #{email}
+	</select>
+	
+	<!-- 유저정보 가져오기 -->
+ 	<select id="readUserByEmail" resultType="UserDTO">
+	    select * from users 
+	    where email = #{email}
+	</select>
+
+	<!-- 회원탈퇴 -->
+	<delete id="delete">
+		delete from users 
+		where email=#{email}
+	</delete>
+
+	<!-- 회원정보 수정 -->
+	<update id="update">
+		update users set password = #{password}
+		where email = #{email}
+	</update>
+	
+	<!-- 비밀번호 찾기를 위한 회원 정보 조회 -->
+	<select id="checkUser" resultType="UserDTO">
+	    select * from users
+    	where email = #{email} and user_name = #{username}
+	</select>
+
+</mapper>
