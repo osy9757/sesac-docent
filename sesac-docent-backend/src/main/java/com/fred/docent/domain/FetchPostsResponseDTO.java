@@ -15,4 +15,6 @@ public class FetchPostsResponseDTO {
 	private String v_user_name;
 	private Integer v_post_likes;
 	private Long v_last_page;
+	private String v_etc;
+	
 }

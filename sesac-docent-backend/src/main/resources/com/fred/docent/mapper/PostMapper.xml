@@ -52,6 +52,7 @@
 		<result property="v_user_name" column="user_name" />
 		<result property="v_post_likes" column="post_likes" />
 		<result property="v_last_page" column="post_last_page" />
+		<result property="v_etc" column="post_etc" />
 	</resultMap>
 
 	<!-- fetchPosts 수정 -->
