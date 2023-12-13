@@ -5,6 +5,7 @@ const initialState = {
   email: "",
   name: "",
   role: "",
+  userId: "",
 };
 
 export const authSlice = createSlice({
@@ -15,6 +16,7 @@ export const authSlice = createSlice({
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.role = action.payload.role;
+      state.userId = action.payload.userId;
     },
     logout: () => {
       return initialState;

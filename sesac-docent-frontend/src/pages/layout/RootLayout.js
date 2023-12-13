@@ -11,6 +11,7 @@ import { useAppSelector } from "store/store";
 const RootLayout = () => {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.authReducer);
+  console.log(state.userId);
 
   const hasValidSessionId = () => {
     const sessionId = document.cookie
@@ -29,8 +30,13 @@ const RootLayout = () => {
     const fetchLoginInfo = async () => {
       try {
         const response = await api.get("/user/loginBySessionId");
-        const { email, username: name, authority: role } = response.data;
-        dispatch(login({ email, name, role }));
+        const {
+          email,
+          username: name,
+          authority: role,
+          userId,
+        } = response.data;
+        dispatch(login({ email, name, role, userId }));
       } catch (error) {
         console.error("Error fetching login info:", error);
       }

@@ -5,16 +5,12 @@
 
 	<insert id="insertPost" parameterType="InsertPostDTO">
 		call insert_post(
-		#{postDTO.p_user_id, jdbcType=NUMERIC},
-		#{postDTO.p_exhibition_id,
-		jdbcType=NUMERIC},
-		#{postDTO.p_category,
-		jdbcType=NUMERIC},
-		#{postDTO.p_title, jdbcType=VARCHAR},
-		#{postDTO.p_content,
-		jdbcType=CLOB},
-		#{postDTO.p_reply_id,
-		jdbcType=NUMERIC}
+			#{postDTO.p_user_id, jdbcType=NUMERIC},
+			#{postDTO.p_exhibition_id, jdbcType=NUMERIC},
+			#{postDTO.p_category, jdbcType=NUMERIC},
+			#{postDTO.p_title, jdbcType=VARCHAR},
+			#{postDTO.p_content, jdbcType=CLOB},
+			#{postDTO.p_reply_id, jdbcType=NUMERIC}
 		)
 	</insert>
 

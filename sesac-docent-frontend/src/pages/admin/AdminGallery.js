@@ -1,7 +1,7 @@
-import { AdminTemplate } from "./components/AdminTemplate";
+import { Board } from "components/Board";
 
 const AdminGallery = () => {
-  return <AdminTemplate type="gallery" title="공간 관리" />;
+  return <Board categoryENG="gallery" categoryKOR="공간 관리" admin={true} />;
 };
 
 export default AdminGallery;

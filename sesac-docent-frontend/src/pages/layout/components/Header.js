@@ -63,11 +63,11 @@ export const Header = () => {
           <div className="w-full max-w-[1300px] flex justify-between mx-10">
             <div className="flex items-center gap-8">
               <LowerHeaderLink link="/notice" text="공지사항" />
-              <LowerHeaderLink link="#" text="갤러리" />
-              <LowerHeaderLink link="#" text="전시 일정" />
-              <LowerHeaderLink link="#" text="작품 정보" />
-              <LowerHeaderLink link="#" text="관람객 후기" />
-              <LowerHeaderLink link="#" text="1:1 문의" />
+              <LowerHeaderLink link="/gallery" text="갤러리" />
+              <LowerHeaderLink link="/exhibition" text="전시 일정" />
+              <LowerHeaderLink link="/artwork" text="작품 정보" />
+              <LowerHeaderLink link="/review" text="관람객 후기" />
+              <LowerHeaderLink link="/inquiry" text="1:1 문의" />
             </div>
             <div className="flex items-center lg:text-lg md:text-sm">
               <p>

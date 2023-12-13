@@ -1,10 +1,10 @@
 import ReactQuill from "react-quill";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import "./Write.css";
+import "./Update.css";
 import api from "apis/api";
 import { useAppSelector } from "store/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const modules = {
   toolbar: {
@@ -16,11 +16,22 @@ const modules = {
   },
 };
 
-export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
+export const Update = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const state = useAppSelector((state) => state.authReducer);
   const navigate = useNavigate();
+  const params = useParams();
+  const postId = params.postId;
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get(`/posts/details/${postId}/${categoryNUM}`);
+      setTitle(response.data.post_title);
+      setContent(response.data.post_content);
+      console.log(response.data);
+    })();
+  }, [categoryNUM, postId]);
 
   const handleTitleChange = (e) => {
     setTitle(e.currentTarget.value);
@@ -28,12 +39,11 @@ export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
 
   const handleSubmit = async () => {
     const body = {
-      p_user_id: state.userId,
-      p_category: categoryNUM,
-      p_title: title,
-      p_content: content,
+      post_id: postId,
+      post_title: title,
+      post_content: content,
     };
-    const response = await api.post("/posts/insert", body);
+    const response = await api.post("/posts/update", body);
     console.log(response.data);
     navigate(`/${categoryENG}`);
   };
@@ -57,6 +67,7 @@ export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
                 id="title"
                 type="text"
                 onChange={handleTitleChange}
+                value={title}
                 className="border border-black w-11/12 h-12 px-4 py-2 text-xl"
               />
             </div>
@@ -67,6 +78,7 @@ export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
                 height: "600px",
               }}
               modules={modules}
+              value={content}
               onChange={setContent}
             />
           </div>

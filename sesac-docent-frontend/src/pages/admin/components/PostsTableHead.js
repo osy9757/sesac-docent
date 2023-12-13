@@ -27,9 +27,6 @@ export const PostsTableHead = ({
       <th scope="col" className="py-2 px-4 text-start">
         {fourth}
       </th>
-      <th scope="col" className="py-2 px-4 text-start">
-        {fifth}
-      </th>
     </tr>
   );
 };

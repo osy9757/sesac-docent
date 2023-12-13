@@ -10,6 +10,7 @@ import { SignError } from "pages/auth/components/SignError";
 import LoginImage from "assets/i_am_ground_wide.jpeg";
 import { useDispatch } from "react-redux";
 import { login } from "store/features/auth-slice";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,12 +28,26 @@ const Login = () => {
       return;
     }
 
-    const response = await api.post("/user/login", {
+    const response = await axios.post("/user/login", {
       email: email.value,
       password: password.value,
     });
-    const { username: name, authority: role } = response.data;
-    dispatch(login({ email: email.value, name, role }));
+
+    const sessionIdCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("JSESSIONID"));
+
+    console.log(document.cookie);
+
+    if (sessionIdCookie) {
+      console.log("세션 쿠키가 설정되었습니다.", sessionIdCookie);
+    } else {
+      console.log("세션 쿠키를 찾을 수 없습니다.");
+    }
+
+    const { username: name, authority: role, userId } = response.data;
+    console.log({ username: name, authority: role, userId });
+    dispatch(login({ email: email.value, name, role, userId }));
     if (!response?.error) {
       navigate("/");
     } else {

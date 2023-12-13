@@ -8,7 +8,7 @@ import { cn } from "utils/tailwind-merge";
 const pageGroupSize = 10;
 const pageSize = 10;
 
-export const Board = ({ categoryKOR, categoryENG }) => {
+export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
   const navigate = useNavigate();
   const params = useParams();
   const pageNumberParams = params.pageNumber;
@@ -17,15 +17,18 @@ export const Board = ({ categoryKOR, categoryENG }) => {
   // http://localhost:3000/notice/page/1 리다이렉트
   useEffect(() => {
     if (!pageNumberParams || pageNumberParams < 0) {
-      navigate(`${categoryENG}/page/1`);
+      admin
+        ? navigate(`/admin/${categoryENG}/page/1`)
+        : navigate(`/${categoryENG}/page/1`);
     }
-  }, [navigate, pageNumberParams, categoryENG]);
+  }, [navigate, pageNumberParams, categoryENG, admin]);
 
   const [posts, setPosts] = useState([]);
   const [lastPage, setLastPage] = useState(120);
   const [pageStart, setPageStart] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageGroup, setPageGroup] = useState([]);
+  const [searchCriteria, setSearchCriteria] = useState("");
 
   useEffect(() => {
     setCurrentPage(pageNumberParams);
@@ -62,7 +65,7 @@ export const Board = ({ categoryKOR, categoryENG }) => {
     (async () => {
       // REST API
       const response = await api.get(
-        `/posts/list/1/${pageSize}/${pageNumberParams}`
+        `/posts/list/${categoryNUM}/${pageSize}/${pageNumberParams}`
       );
 
       // 날짜 포맷 변환
@@ -89,7 +92,7 @@ export const Board = ({ categoryKOR, categoryENG }) => {
     })();
 
     // 페이지가 바뀔 때마다 수행
-  }, [pageNumberParams]);
+  }, [pageNumberParams, categoryNUM]);
 
   // 다음 페이지
   const handleNextPageGroup = () => {
@@ -111,6 +114,23 @@ export const Board = ({ categoryKOR, categoryENG }) => {
 
   const writeClickHandler = () => {
     navigate(`/${categoryENG}/write`);
+  };
+
+  const searchValueHandler = (event) => {
+    setSearchCriteria(event.target.value);
+  };
+
+  const searchHandler = async (event) => {
+    event.preventDefault();
+    navigate(
+      admin
+        ? `/admin/${categoryENG}/page/1?search=${searchCriteria}`
+        : `/${categoryENG}/page/1?search=${searchCriteria}`
+    );
+  };
+
+  const postClickHandler = (postId) => {
+    navigate(`/${categoryENG}/post/${postId}`);
   };
 
   return (
@@ -180,13 +200,16 @@ export const Board = ({ categoryKOR, categoryENG }) => {
               <option value="name">글쓴이</option>
             </select>
             <div className="flex gap-2">
-              <input
-                type="text"
-                className="h-10 border-b border-black p-1 px-4"
-              />
-              <button>
-                <Search />
-              </button>
+              <form onSubmit={searchHandler}>
+                <input
+                  type="text"
+                  className="h-10 border-b border-black p-1 px-4"
+                  onChange={searchValueHandler}
+                />
+                <button type="submit">
+                  <Search />
+                </button>
+              </form>
             </div>
           </div>
           <div className="flex gap-5 text-xl w-fit">

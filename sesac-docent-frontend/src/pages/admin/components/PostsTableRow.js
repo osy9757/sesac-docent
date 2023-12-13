@@ -3,7 +3,6 @@ import { PostsTableData } from "./PostsTableData";
 
 export const PostsRow = ({
   id,
-  status,
   name,
   title,
   date,
@@ -22,7 +21,6 @@ export const PostsRow = ({
         allChecked={allChecked}
       />
       <PostsTableData type="id" data={id} onClick={rowClickHandler} />
-      <PostsTableData type="status" data={status} onClick={rowClickHandler} />
       <PostsTableData type="name" data={name} onClick={rowClickHandler} />
       <PostsTableData type="title" data={title} onClick={rowClickHandler} />
       <PostsTableData type="date" data={date} onClick={rowClickHandler} />
