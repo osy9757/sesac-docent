@@ -3,26 +3,46 @@
 
 <mapper namespace="com.fred.docent.mapper.PostMapper">
 
-	<insert id="insertPost"
-		parameterType="com.fred.docent.domain.InsertPostDTO">
-		begin
-		insert_post(
-		#{postDTO.user_Id, jdbcType=NUMERIC},
-		#{postDTO.exhibition_Id, jdbcType=NUMERIC},
-		#{postDTO.category,
+	<insert id="insertPost" parameterType="InsertPostDTO">
+		call insert_post(
+		#{postDTO.p_user_id, jdbcType=NUMERIC},
+		#{postDTO.p_exhibition_id,
 		jdbcType=NUMERIC},
-		#{postDTO.title, jdbcType=VARCHAR},
-		#{postDTO.content,
+		#{postDTO.p_category,
+		jdbcType=NUMERIC},
+		#{postDTO.p_title, jdbcType=VARCHAR},
+		#{postDTO.p_content,
 		jdbcType=CLOB},
-		#{postDTO.reply_Id,
+		#{postDTO.p_reply_id,
 		jdbcType=NUMERIC}
 		)
-		end;
 	</insert>
 
+	<update id="updatePost" parameterType="UpdatePostDTO">
+		UPDATE posts
+		SET
+		post_title
+		= #{postDTO.post_title},
+		post_content = #{postDTO.post_content},
+		post_updated_at = SYSDATE
+		WHERE
+		post_id = #{postDTO.post_id}
+	</update>
+
+	<update id="deletePost" parameterType="UpdatePostDTO">
+		UPDATE posts
+		SET
+		post_valid
+		= #{postDTO.post_valid},
+		post_updated_at = SYSDATE
+		WHERE
+		post_id =
+		#{postDTO.post_id}
+	</update>
+
+
 	<!-- Result Map 정의 -->
-	<resultMap id="PostResultMap"
-		type="com.fred.docent.domain.FetchPostsResponseDTO">
+	<resultMap id="PostResultMap" type="FetchPostsResponseDTO">
 		<result property="v_post_rank" column="post_rank" />
 		<result property="v_post_id" column="post_id" />
 		<result property="v_post_title" column="post_title" />
@@ -35,8 +55,7 @@
 	</resultMap>
 
 	<!-- fetchPosts 수정 -->
-	<select id="fetchPosts"
-		parameterType="com.fred.docent.domain.FetchPostsRequestDTO"
+	<select id="fetchPosts" parameterType="FetchPostsRequestDTO"
 		resultMap="PostResultMap">
 		SELECT * FROM TABLE(fetch_posts(
 		#{requestDTO.p_category,
@@ -48,29 +67,39 @@
 		))
 	</select>
 
-
-	<!-- <select id="fetchPosts" parameterType="com.fred.docent.domain.FetchPostsRequestDTO" 
-		resultType="com.fred.docent.domain.FetchPostsResponseDTO"> CALL fetch_posts( 
-		#{requestDTO.p_category, jdbcType=NUMERIC}, #{requestDTO.p_page_size, jdbcType=NUMERIC}, 
-		#{requestDTO.p_page_number, jdbcType=NUMERIC}, #{requestDTO.p_search_title, 
-		jdbcType=VARCHAR} ) </select> -->
 	<select id="fetchPostDetails"
-		parameterType="com.fred.docent.domain.FetchPostDetailsRequestDTO"
-		resultType="com.fred.docent.domain.FetchPostDetailsResponseDTO">
+		parameterType="FetchPostDetailsRequestDTO"
+		resultType="FetchPostDetailsResponseDTO">
 		<choose>
 			<when test="requestDTO.category == 1">
-				SELECT * FROM TABLE(fetch_post_details_cat1(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+				SELECT * FROM
+				TABLE(fetch_post_details_cat1(#{requestDTO.post_Id,
+				jdbcType=NUMERIC}))
 			</when>
 			<when test="requestDTO.category == 2">
-				SELECT * FROM TABLE(fetch_post_details_cat2(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+				SELECT * FROM
+				TABLE(fetch_post_details_cat2(#{requestDTO.post_Id,
+				jdbcType=NUMERIC}))
 			</when>
 			<when test="requestDTO.category == 3">
-				SELECT * FROM TABLE(fetch_post_details_cat3(#{requestDTO.post_Id, jdbcType=NUMERIC}))
+				SELECT * FROM
+				TABLE(fetch_post_details_cat3(#{requestDTO.post_Id,
+				jdbcType=NUMERIC}))
 			</when>
 			<otherwise>
-				
+
 			</otherwise>
 		</choose>
 	</select>
+	<select id="fetchArtCollections"
+		parameterType="FetchPostsRequestDTO"
+		resultType="FetchArtCollectionResponseDTO">
+		{ CALL fetch_artcollections(
+		#{requestDTO.p_table_name, jdbcType=VARCHAR, mode=IN},
+		#{requestDTO.p_page_size, jdbcType=NUMERIC, mode=IN},
+		#{requestDTO.p_page_number, jdbcType=NUMERIC, mode=IN}
+		) }
+	</select>
+
 
 </mapper>
