@@ -29,6 +29,7 @@ export const Write = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const handleSubmit = async () => {
     const body = {
       p_user_id: state.userId,
+      p_exhibition_id: 1,
       p_category: categoryNUM,
       p_title: title,
       p_content: content,

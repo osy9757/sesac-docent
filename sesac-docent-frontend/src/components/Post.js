@@ -10,6 +10,7 @@ import { numberToDate } from "utils/format-date";
 
 export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const [data, setData] = useState();
+  const [reply, setReply] = useState();
   const [sortType, setSortType] = useState("popular");
   const [newReply, setNewReply] = useState("");
   const params = useParams();
@@ -22,7 +23,8 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
     (async () => {
       console.log(`/posts/details/${postId}/${categoryNUM}`);
       const response = await api.get(`/posts/details/${postId}/${categoryNUM}`);
-      setData(response.data);
+      setData(response.data[0]);
+      setReply(response.data);
 
       console.log(response.data);
     })();
@@ -31,15 +33,16 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
   const replySubmitHandler = async (event) => {
     event.preventDefault();
     console.log(newReply);
+    const reply_content = event.target.newReply.value;
     const body = {
       p_user_id: state.userId,
       p_category: 4,
-      p_title: newReply,
-      p_content: newReply,
+      p_title: reply_content,
+      p_content: reply_content,
       p_reply_id: postId,
     };
     const response = await api.post("/posts/insert", body);
-    console.log(response.data);
+    console.log("reply submit: " + response.data);
 
     if (response.data) window.location.reload();
   };
@@ -65,45 +68,47 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
       {/* title 영역 */}
       <p className="text-4xl font-semibold">{categoryKOR}</p>
       {/* post 영역 */}
-      <div className="w-full max-w-[1000px] px-10 py-5 rounded-xl bg-white flex flex-col justify-center items-center gap-6">
+      <div className="w-full max-w-[1000px] px-10 py-5 rounded-xl bg-white flex flex-col justify-center items-center gap-4">
         {/* 제목영역 */}
         <div className="w-full flex flex-col gap-4">
-          <div className="w-full flex gap-2">
-            <label
-              htmlFor="title"
-              className="w-1/12 max-w-[1300px] h-12 px-4 py-2 text-xl font-bold flex justify-center items-center border border-black"
-            >
-              제목
-            </label>
-            <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
-              {data?.post_title}
-            </p>
+          <div className="w-full flex flex-col gap-4">
+            <div className="w-full flex gap-2">
+              <label
+                htmlFor="title"
+                className="w-1/12 max-w-[1300px] h-12 px-4 py-2 text-xl font-bold flex justify-center items-center border border-black"
+              >
+                제목
+              </label>
+              <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
+                {data?.post_title}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="w-full flex flex-col gap-4">
-          <div className="w-full flex gap-2">
-            <label
-              htmlFor="title"
-              className="w-1/12 max-w-[1300px] h-12 px-4 py-2 font-bold flex justify-center items-center border border-black"
-            >
-              글쓴이
-            </label>
-            <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
-              {data?.user_name}
-            </p>
+          <div className="w-full flex flex-col gap-4">
+            <div className="w-full flex gap-2">
+              <label
+                htmlFor="title"
+                className="w-1/12 max-w-[1300px] h-12 px-4 py-2 font-bold flex justify-center items-center border border-black"
+              >
+                글쓴이
+              </label>
+              <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
+                {data?.user_name}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="w-full flex flex-col gap-4">
-          <div className="w-full flex gap-2">
-            <label
-              htmlFor="title"
-              className="w-1/12 max-w-[1300px] h-12 px-4 py-2 font-bold flex justify-center items-center border border-black"
-            >
-              작성일
-            </label>
-            <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
-              {data?.post_created_at && numberToDate(data?.post_created_at)}
-            </p>
+          <div className="w-full flex flex-col gap-4">
+            <div className="w-full flex gap-2">
+              <label
+                htmlFor="title"
+                className="w-1/12 max-w-[1300px] h-12 px-4 py-2 font-bold flex justify-center items-center border border-black"
+              >
+                작성일
+              </label>
+              <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
+                {data?.post_created_at && numberToDate(data?.post_created_at)}
+              </p>
+            </div>
           </div>
         </div>
         {/* 본문영역 */}
@@ -124,12 +129,14 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
         {data?.user_name === state.name && (
           <div className="w-full flex justify-end gap-2">
             <button
+              key={1}
               className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition"
               onClick={updateHandler}
             >
               수정
             </button>
             <button
+              key={2}
               className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-rose-500 text-rose-500 hover:text-white transition"
               onClick={deleteHandler}
             >
@@ -165,7 +172,7 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
             </button>
           </div>
         )}
-        {true && (
+        {/* {true && (
           <div className="w-full flex flex-col gap-8">
             {DUMMY_REPLY.map((reply) => (
               <Reply
@@ -180,21 +187,24 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
               />
             ))}
           </div>
-        )}
-        {data?.reply_post_content && (
-          <div className="w-full flex flex-col gap-8">
-            <Reply
-              key={1}
-              replyId={1}
-              username={data?.reply_user_name}
-              content={data?.reply_post_content}
-              date={numberToDate(data?.reply_post_created_at)}
-              like={true}
-              likeCountProps={0}
-              myLike={true}
-            />
-          </div>
-        )}
+        )} */}
+        {data?.reply_post_content &&
+          reply.map((each) => (
+            <div
+              className="w-full flex flex-col gap-8"
+              key={each?.reply_post_created_at}
+            >
+              <Reply
+                replyId={each?.reply_post_created_at}
+                username={each?.reply_user_name}
+                content={each?.reply_post_content}
+                date={numberToDate(each?.reply_post_created_at)}
+                like={true}
+                likeCountProps={0}
+                myLike={true}
+              />
+            </div>
+          ))}
       </div>
       {/* reply write 영역 */}
       {showReplyWrite && (
@@ -218,8 +228,6 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
               name="newReply"
               className="w-full p-5 h-40 border border-zinc-300"
               placeholder="댓글을 작성하려면 로그인해주세요."
-              value={newReply}
-              onChange={(event) => setNewReply(event.target.value)}
             ></textarea>
             <div className="flex justify-end"></div>
           </form>

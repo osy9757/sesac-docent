@@ -41,7 +41,10 @@ export const Reply = ({
   const categoryENG = location.state && location.state.categoryENG;
   const categoryKOR = location.state && location.state.categoryKOR;
 
-  const x = generateRandomNumber();
+  useEffect(() => {
+    setLike(Math.random() < 0.5);
+    setLikeCount(generateRandomNumber());
+  }, []);
 
   const heartClickHandler = () => {
     if (like === true) {
@@ -81,7 +84,7 @@ export const Reply = ({
               ) : (
                 <Heart size={30} />
               )}
-              <p className="text-lg font-mono">{x}</p>
+              <p className="text-lg font-mono">{likeCount}</p>
             </button>
           </div>
           <p className="text-lg">{content}</p>
