@@ -53,9 +53,14 @@ const AdminInquiry = () => {
     if (searchParams.get("search")) {
       console.log(searchParams.get("search"));
       const func = async () => {
-        const data = await searchPosts(3, pageSize, 1, searchCriteria);
+        const data = await searchPosts(
+          3,
+          pageSize,
+          pageNumberParams,
+          searchCriteria
+        );
 
-        const updatedData = data.data.map((post) => {
+        const updatedData = data.map((post) => {
           return {
             ...post,
             v_post_updated_at: numberToDate(post.v_post_updated_at),
@@ -148,7 +153,9 @@ const AdminInquiry = () => {
 
   const searchHandler = async (event) => {
     event.preventDefault();
-    navigate(`/admin/${type}/${inqCateParams}/page/1?search=${searchCriteria}`);
+    navigate(
+      `/admin/${type}/${inqCateParams}/page/${pageNumberParams}?search=${searchCriteria}`
+    );
   };
 
   const postClickHandler = (postId) => {
@@ -269,7 +276,7 @@ const AdminInquiry = () => {
                   />
                   <PostsTableData
                     type="id"
-                    data={post.v_post_id}
+                    data={post.v_post_rank}
                     onClick={() => postClickHandler(post.v_post_id)}
                   />
                   <PostsTableData

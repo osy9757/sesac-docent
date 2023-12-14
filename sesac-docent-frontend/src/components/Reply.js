@@ -46,7 +46,7 @@ export const Reply = ({
               </div>
               <p className="text-zinc-500">{date}</p>
             </div>
-            {/* <button
+            <button
               className="flex gap-2 items-center"
               onClick={heartClickHandler}
             >
@@ -59,8 +59,8 @@ export const Reply = ({
               ) : (
                 <Heart size={30} />
               )}
-              <p className="text-lg">{likeCount}</p>
-            </button> */}
+              <p className="text-lg font-mono">{likeCount}</p>
+            </button>
           </div>
           <p className="text-lg">{content}</p>
         </div>

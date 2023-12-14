@@ -139,7 +139,7 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
       </div>
       {/* reply 영역 */}
       <div className="w-full max-w-[1000px] flex px-10 flex-col gap-4">
-        {data?.reply_list && (
+        {true && (
           <div className="flex justify-end items-center w-full">
             <button
               onClick={() => setSortType("popular")}
@@ -164,7 +164,7 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
             </button>
           </div>
         )}
-        {data?.reply_list && (
+        {true && (
           <div className="w-full flex flex-col gap-8">
             {DUMMY_REPLY.map((reply) => (
               <Reply
@@ -174,7 +174,7 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
                 content={reply.content}
                 date={reply.date}
                 like={true}
-                likeCountProps={72}
+                likeCountProps={0}
                 myLike={true}
               />
             ))}

@@ -77,7 +77,7 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
         const data = await searchPosts(
           parseInt(categoryNUM),
           pageSize,
-          1,
+          pageNumberParams,
           searchCriteria
         );
         const updatedData = data.map((post) => {
@@ -86,6 +86,7 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
             v_post_updated_at: numberToDate(post.v_post_updated_at),
           };
         });
+        console.log("here");
         setLastPage(updatedData[0].v_last_page);
         setPosts(updatedData);
       };
@@ -150,13 +151,9 @@ export const Board = ({ categoryKOR, categoryENG, categoryNUM, admin }) => {
     event.preventDefault();
     navigate(
       admin
-        ? `/admin/${categoryENG}/page/1?search=${searchCriteria}`
-        : `/${categoryENG}/page/1?search=${searchCriteria}`
+        ? `/admin/${categoryENG}/page/${pageNumberParams}?search=${searchCriteria}`
+        : `/${categoryENG}/page/${pageNumberParams}?search=${searchCriteria}`
     );
-  };
-
-  const postClickHandler = (postId) => {
-    navigate(`/${categoryENG}/post/${postId}`);
   };
 
   const showWrite =
