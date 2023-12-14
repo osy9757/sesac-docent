@@ -38,8 +38,8 @@ export const AdminSidebar = () => {
         text="전시 관리"
         icon={<Presentation />}
       />
-      <SidebarLink link="/admin/artist" text="작가 관리" icon={<Brush />} />
-      <SidebarLink link="/admin/artwork" text="작품 관리" icon={<Image />} />
+      <SidebarLink link="/admin/author" text="작가 관리" icon={<Brush />} />
+      <SidebarLink link="/admin/work" text="작품 관리" icon={<Image />} />
     </div>
   );
 };

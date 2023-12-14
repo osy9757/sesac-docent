@@ -9,7 +9,8 @@
 		exhibition_start_date,
 		exhibition_end_date,
 		exhibition_base64)
-		values(seq_exhibition.NEXTVAL, #{gallery_id}, #{exhibition_name}, #{exhibition_description},
+		values(seq_exhibition.NEXTVAL,
+		#{gallery_id}, #{exhibition_name}, #{exhibition_description},
 		#{exhibition_start_date}, #{exhibition_end_date}, #{exhibition_base64})
 	</insert>
 

@@ -2,14 +2,10 @@ import { X } from "lucide-react";
 import { ModalLayout } from "./modal-layout";
 import { useDispatch } from "react-redux";
 import { closeModal } from "store/features/modal-slice";
-import { addGallery } from "apis/requests";
+import { add } from "apis/requests";
 
 export const GalleryModal = () => {
   const dispatch = useDispatch();
-  // <label>갤러리 위치</label>
-  // <input></input>
-  // <label>갤러리 전화번호</label>
-  // <input></input>
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -31,8 +27,9 @@ export const GalleryModal = () => {
       gallery_base64,
     };
 
-    const response = await addGallery(body);
+    const response = await add("gallery", body);
     console.log(body);
+    dispatch(closeModal());
   };
 
   return (
@@ -54,43 +51,10 @@ export const GalleryModal = () => {
             className="flex flex-col gap-4 h-full w-full p-5 px-40"
             onSubmit={submitHandler}
           >
-            <div className="flex gap-2 w-full">
-              <label className="h-12 px-4 py-2 w-1/6 border border-black text-lg font-semibold text-center">
-                갤러리 이름
-              </label>
-              <input
-                name="galleryName"
-                className="h-12 px-4 py-2 w-5/6 border border-black bg-transparent"
-              ></input>
-            </div>
-            <div className="flex gap-2 w-full">
-              <label className="h-12 px-4 py-2 w-1/6 border border-black text-lg font-semibold text-center">
-                갤러리 위치
-              </label>
-              <input
-                name="galleryLocation"
-                className="h-12 px-4 py-2 w-5/6 border border-black bg-transparent"
-              ></input>
-            </div>
-            <div className="flex gap-2 w-full">
-              <label className="h-12 px-4 py-2 w-1/6 border border-black text-lg font-semibold text-center">
-                전화번호
-              </label>
-              <input
-                name="galleryNumber"
-                className="h-12 px-4 py-2 w-5/6 border border-black bg-transparent"
-              ></input>
-            </div>
-            <div className="flex gap-2 w-full">
-              <label className="h-12 px-4 py-2 w-1/6 border border-black text-lg font-semibold text-center">
-                이미지
-              </label>
-              <input
-                type="file"
-                name="galleryUrl"
-                className="h-12 px-4 py-2 w-5/6 border border-black bg-transparent"
-              ></input>
-            </div>
+            <INPUT label="갤러리 이름" name="galleryName" />
+            <INPUT label="갤러리 위치" name="galleryLocation" />
+            <INPUT label="전화번호" name="galleryNumber" />
+            <INPUT label="이미지" name="galleryUrl" type="file" />
             <div>
               <div className="flex gap-4 justify-end">
                 <button className="w-fit h-fit px-4 py-2 border border-black text-lg font-bold hover:bg-black hover:text-white transition">
@@ -104,5 +68,20 @@ export const GalleryModal = () => {
         <div></div>
       </div>
     </ModalLayout>
+  );
+};
+
+const INPUT = ({ label, type, name }) => {
+  return (
+    <div className="flex gap-2 w-full">
+      <label className="h-12 px-4 py-2 w-1/6 border border-black text-lg font-semibold text-center">
+        {label}
+      </label>
+      <input
+        type={type}
+        name={name}
+        className="h-12 px-4 py-2 w-5/6 border border-black bg-transparent"
+      ></input>
+    </div>
   );
 };

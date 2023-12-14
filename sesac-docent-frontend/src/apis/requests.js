@@ -42,9 +42,10 @@ export const deletePosts = async (postIds) => {
   }
 };
 
-export const addGallery = async (body) => {
+export const add = async (type, body) => {
   try {
-    const URI = `/gallery/insert`;
+    const URI = `/${type}/insert`;
+    console.log(URI);
     console.log(body);
     const response = await api.post(URI, body);
     console.log(response.data);

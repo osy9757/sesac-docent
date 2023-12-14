@@ -6,12 +6,11 @@ import Register from "pages/auth/Register";
 import RootLayout from "pages/layout/RootLayout";
 import AdminLayout from "pages/layout/AdminLayout";
 import AdminPost from "pages/admin/AdminPost";
-import AdminArtwork from "pages/admin/AdminArtwork";
 import AdminHome from "pages/admin/AdminHome";
 import AdminUser from "pages/admin/AdminUser";
 import AdminExhibition from "pages/admin/AdminExhibition";
 import AdminGallery from "pages/admin/AdminGallery";
-import AdminArtist from "pages/admin/AdminArtist";
+import AdminAuthor from "pages/admin/AdminAuthor";
 import AdminInquiry from "pages/admin/AdminInquiry";
 import MyInfo from "pages/auth/MyInfo";
 // import Notice from "pages/notices/PostsTable";
@@ -29,14 +28,15 @@ import ReviewWrite from "pages/board/ReviewWrite";
 import NoticeUpdate from "pages/board/NoticeUpdate";
 import InquiryUpdate from "pages/board/InquiryUpdate";
 import ReviewUpdate from "pages/board/ReviewUpdate";
+import AdminWork from "pages/admin/AdminWork";
 
 const adminRoutes = [
   { name: "user", component: <AdminUser /> },
   { name: "post", component: <AdminPost /> },
   { name: "gallery", component: <AdminGallery /> },
   { name: "exhibition", component: <AdminExhibition /> },
-  { name: "artist", component: <AdminArtist /> },
-  { name: "artwork", component: <AdminArtwork /> },
+  { name: "author", component: <AdminAuthor /> },
+  { name: "work", component: <AdminWork /> },
 ];
 
 const router = createBrowserRouter([
