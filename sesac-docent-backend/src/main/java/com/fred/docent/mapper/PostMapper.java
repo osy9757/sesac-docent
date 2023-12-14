@@ -25,7 +25,7 @@ public interface PostMapper {
 
 	List<FetchPostsResponseDTO> fetchPosts(@Param("requestDTO") FetchPostsRequestDTO requestDTO);
 
-	FetchPostDetailsResponseDTO fetchPostDetails(@Param("requestDTO") FetchPostDetailsRequestDTO requestDTO);
+	List<FetchPostDetailsResponseDTO> fetchPostDetails(@Param("requestDTO") FetchPostDetailsRequestDTO requestDTO);
 	
 	List<FetchArtCollectionResponseDTO> fetchArtCollections(@Param("requestDTO") FetchPostsRequestDTO requestDTO);
 }

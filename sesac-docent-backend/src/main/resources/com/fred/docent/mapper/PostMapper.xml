@@ -5,12 +5,14 @@
 
 	<insert id="insertPost" parameterType="InsertPostDTO">
 		call insert_post(
-			#{postDTO.p_user_id, jdbcType=NUMERIC},
-			#{postDTO.p_exhibition_id, jdbcType=NUMERIC},
-			#{postDTO.p_category, jdbcType=NUMERIC},
-			#{postDTO.p_title, jdbcType=VARCHAR},
-			#{postDTO.p_content, jdbcType=CLOB},
-			#{postDTO.p_reply_id, jdbcType=NUMERIC}
+		#{postDTO.p_user_id, jdbcType=NUMERIC},
+		#{postDTO.p_exhibition_id,
+		jdbcType=NUMERIC},
+		#{postDTO.p_category, jdbcType=NUMERIC},
+		#{postDTO.p_title, jdbcType=VARCHAR},
+		#{postDTO.p_content,
+		jdbcType=CLOB},
+		#{postDTO.p_reply_id, jdbcType=NUMERIC}
 		)
 	</insert>
 
@@ -30,7 +32,8 @@
 		SET
 		post_valid = 0,
 		post_updated_at = SYSDATE
-		WHERE post_id IN
+		WHERE post_id
+		IN
 		<foreach item="id" collection="postDTO.post_ids" open="("
 			separator="," close=")">
 			#{id}
@@ -55,50 +58,85 @@
 	<!-- fetchPosts 수정 -->
 	<select id="fetchPosts" parameterType="FetchPostsRequestDTO"
 		resultMap="PostResultMap">
-		SELECT * FROM TABLE(fetch_posts(
-		#{requestDTO.p_category,
-		jdbcType=NUMERIC},
-		#{requestDTO.p_page_size, jdbcType=NUMERIC},
-		#{requestDTO.p_page_number, jdbcType=NUMERIC},
-		#{requestDTO.p_search_title, jdbcType=VARCHAR},
+		SELECT * FROM
+		TABLE(fetch_posts(#{requestDTO.p_category,jdbcType=NUMERIC},#{requestDTO.p_page_size,jdbcType=NUMERIC},#{requestDTO.p_page_number,
+		jdbcType=NUMERIC},#{requestDTO.p_search_title, jdbcType=VARCHAR},
 		#{requestDTO.p_post_status, jdbcType=VARCHAR}
 		))
 	</select>
+
+	<!-- <resultMap id="PostDetailsResultMap" type="FetchPostDetailsResponseDTO"> 
+		<id property="post_id" column="post_id" /> <result property="user_name" column="user_name" 
+		/> <result property="post_valid" column="post_valid" /> <result property="post_title" 
+		column="post_title" /> <result property="post_content" column="post_content" 
+		/> <result property="post_views" column="post_views" /> <result property="post_created_at" 
+		column="post_created_at" /> <result property="post_updated_at" column="post_updated_at" 
+		/> 카테고리 2 전용 필드 매핑 <result property="exhibition_name" column="exhibition_name" 
+		/> <result property="exhibition_description" column="exhibition_description" 
+		/> <result property="exhibition_start_date" column="exhibition_start_date" 
+		/> <result property="exhibition_end_date" column="exhibition_end_date" /> 
+		<result property="exhibition_valid" column="exhibition_valid" /> <result 
+		property="exhibition_url" column="exhibition_url" /> <result property="post_likes" 
+		column="post_likes" /> 답변 목록 매핑 <collection property="replies" ofType="com.fred.docent.domain.FetchPostDetailsResponseDTO$ReplyDetail"> 
+		<result property="reply_user_name" column="reply_user_name" /> <result property="reply_post_valid" 
+		column="reply_post_valid" /> <result property="reply_post_title" column="reply_post_title" 
+		/> <result property="reply_post_content" column="reply_post_content" /> <result 
+		property="reply_post_created_at" column="reply_post_created_at" /> </collection> 
+		</resultMap> -->
+
+	<!-- <resultMap id="PostDetailCat1ResultMap" type="com.fred.docent.domain.FetchPostDetailsResponseDTO"> 
+		<result property="post_id" column="post_id" /> <result property="user_name" 
+		column="user_name" /> <result property="post_valid" column="post_valid" /> 
+		<result property="post_title" column="post_title" /> <result property="post_content" 
+		column="post_content" /> <result property="post_views" column="post_views" 
+		/> <result property="post_created_at" column="post_created_at" /> <result 
+		property="post_updated_at" column="post_updated_at" /> <collection property="reply_obj" 
+		ofType="com.fred.docent.domain.FetchPostDetailsResponseDTO$ReplyDetail"> 
+		<result property="reply_user_name" column="reply_user_name" /> <result property="reply_post_valid" 
+		column="reply_post_valid" /> <result property="reply_post_title" column="reply_post_title" 
+		/> <result property="reply_post_content" column="reply_post_content" /> <result 
+		property="reply_post_created_at" column="reply_post_created_at" /> </collection> 
+		</resultMap> -->
+
+	<!-- Similar resultMap definitions for PostDetailCat2ResultMap and PostDetailCat3ResultMap -->
+
 
 	<select id="fetchPostDetails"
 		parameterType="FetchPostDetailsRequestDTO"
 		resultType="FetchPostDetailsResponseDTO">
 		<choose>
 			<when test="requestDTO.category == 1">
-				SELECT * FROM
-				TABLE(fetch_post_details_cat1(#{requestDTO.post_Id,
-				jdbcType=NUMERIC}))
+				SELECT * FROM TABLE(fetch_post_details_cat1(#{requestDTO.p_post_id
+				,jdbcType=NUMERIC}))
 			</when>
 			<when test="requestDTO.category == 2">
-				SELECT * FROM
-				TABLE(fetch_post_details_cat2(#{requestDTO.post_Id,
-				jdbcType=NUMERIC}))
+				SELECT * FROM TABLE(fetch_post_details_cat2(#{requestDTO.p_post_id
+				,jdbcType=NUMERIC}))
 			</when>
 			<when test="requestDTO.category == 3">
-				SELECT * FROM
-				TABLE(fetch_post_details_cat3(#{requestDTO.post_Id,
-				jdbcType=NUMERIC}))
+				SELECT * FROM TABLE(fetch_post_details_cat3(#{requestDTO.p_post_id
+				,jdbcType=NUMERIC}))
 			</when>
 			<otherwise>
-
+				SELECT 'Invalid category value' AS error_message FROM DUAL
 			</otherwise>
 		</choose>
 	</select>
+
+
 	<select id="fetchArtCollections"
-        parameterType="FetchPostsRequestDTO"
-        resultType="FetchArtCollectionResponseDTO">
-    { CALL fetch_artcollections(
-        #{p_table_name, jdbcType=VARCHAR, mode=IN},
-        #{p_search_title, jdbcType=VARCHAR, mode=IN},
-        #{p_page_size, jdbcType=NUMERIC, mode=IN},
-        #{p_page_number, jdbcType=NUMERIC, mode=IN}
-    ) }
-</select>
+		parameterType="FetchPostsRequestDTO"
+		resultType="FetchArtCollectionResponseDTO">
+		{ CALL fetch_artcollections(
+		#{p_table_name,
+		jdbcType=VARCHAR, mode=IN},
+		#{p_search_title, jdbcType=VARCHAR,
+		mode=IN},
+		#{p_page_size, jdbcType=NUMERIC, mode=IN},
+		#{p_page_number,
+		jdbcType=NUMERIC, mode=IN}
+		) }
+	</select>
 
 
 

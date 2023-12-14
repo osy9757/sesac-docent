@@ -70,11 +70,10 @@ public class PostController {
 	}
 
 	@GetMapping(value = "/details/{postId}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<FetchPostDetailsResponseDTO> fetchPostDetails(@PathVariable("postId") Long postId,
+	public ResponseEntity<List<FetchPostDetailsResponseDTO>> fetchPostDetails(@PathVariable("postId") Long postId,
 			@PathVariable("category") Integer category) {
-
 		FetchPostDetailsRequestDTO requestDTO = new FetchPostDetailsRequestDTO(postId, category);
-		FetchPostDetailsResponseDTO postDetails = postsService.fetchPostDetails(requestDTO);
+		List<FetchPostDetailsResponseDTO> postDetails = postsService.fetchPostDetails(requestDTO);
 		if (postDetails != null) {
 			return new ResponseEntity<>(postDetails, HttpStatus.OK);
 		} else {

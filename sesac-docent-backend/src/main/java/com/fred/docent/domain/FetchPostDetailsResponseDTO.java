@@ -6,17 +6,19 @@ import lombok.Data;
 @Data
 public class FetchPostDetailsResponseDTO {
 
-    // 공통 필드
+    // Common fields for categories 1, 2, and 3
     private Long post_id;
     private String user_name;
     private Integer post_valid;
     private String post_title;
     private String post_content;
-    private Integer post_views;
     private Date post_created_at;
     private Date post_updated_at;
 
-    // 카테고리 2 전용 필드
+    // Category 1 specific fields
+    private Integer post_views;
+
+    // Category 2 specific fields
     private String exhibition_name;
     private String exhibition_description;
     private Date exhibition_start_date;
@@ -25,11 +27,10 @@ public class FetchPostDetailsResponseDTO {
     private String exhibition_url;
     private Integer post_likes;
 
-    // 카테고리 3 전용 필드
+    // Reply details - Now as direct fields, not a list
     private String reply_user_name;
     private Integer reply_post_valid;
     private String reply_post_title;
     private String reply_post_content;
     private Date reply_post_created_at;
-
 }

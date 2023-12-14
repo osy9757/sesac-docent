@@ -21,7 +21,7 @@ public interface PostsService {
 
 	List<FetchPostsResponseDTO> fetchPosts(FetchPostsRequestDTO requestDTO);
 
-	FetchPostDetailsResponseDTO fetchPostDetails(FetchPostDetailsRequestDTO requestDTO);
+	List<FetchPostDetailsResponseDTO> fetchPostDetails(FetchPostDetailsRequestDTO requestDTO);
 	
 	List<FetchArtCollectionResponseDTO> fetchArtCollections(FetchPostsRequestDTO requestDTO);
 }

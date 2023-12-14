@@ -53,8 +53,9 @@ public class PostsServiceImpl implements PostsService {
 	}
 
 	@Override
-	public FetchPostDetailsResponseDTO fetchPostDetails(FetchPostDetailsRequestDTO requestDTO) {
-		log.info("Fetching post details for post ID: " + requestDTO.getPost_Id());
+	public List<FetchPostDetailsResponseDTO> fetchPostDetails(FetchPostDetailsRequestDTO requestDTO) {
+		log.info("Fetching post details for post ID: " + requestDTO.getP_post_id());
+
 		return postMapper.fetchPostDetails(requestDTO);
 	}
 

@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FetchPostDetailsRequestDTO {
-	private Long post_Id;
+	private Long p_post_id;
 	private Integer category;
 }
