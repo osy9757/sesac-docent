@@ -14,4 +14,5 @@ public class ExhibitionDTO {
 	private Date exhibition_start_date;
 	private Date exhibition_end_date;
 	private String exhibition_url;
+	private String exhibition_base64;
 }

@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "store/store";
 import { login } from "store/features/auth-slice";
 import api from "apis/api";
+import { ModalProvider } from "pages/admin/modals/modal-provider";
 
 export const MenuContext = createContext();
 
@@ -67,6 +68,7 @@ const AdminLayout = () => {
           height: "calc(100vh - 80px)",
         }}
       >
+        <ModalProvider />
         <Outlet />
       </div>
     </MenuContext.Provider>

@@ -8,11 +8,9 @@
 		exhibition_name, exhibition_description,
 		exhibition_start_date,
 		exhibition_end_date,
-		exhibition_url)
-		values(seq_exhibition.NEXTVAL,
-		#{gallery_id},
-		#{exhibition_name}, #{exhibition_description},
-		#{exhibition_start_date}, #{exhibition_end_date}, #{exhibition_url})
+		exhibition_base64)
+		values(seq_exhibition.NEXTVAL, #{gallery_id}, #{exhibition_name}, #{exhibition_description},
+		#{exhibition_start_date}, #{exhibition_end_date}, #{exhibition_base64})
 	</insert>
 
 	<select id="list" resultType="ExhibitionDTO">

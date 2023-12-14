@@ -1,7 +1,7 @@
-import { AdminTemplate } from "./components/AdminTemplate";
+import { AdminTemplate2 } from "./components/AdminTemplate2";
 
 const AdminPiece = () => {
-  return <AdminTemplate type="artwork" title="작품 관리" />;
+  return <AdminTemplate2 type="work" title="작품 관리" />;
 };
 
 export default AdminPiece;

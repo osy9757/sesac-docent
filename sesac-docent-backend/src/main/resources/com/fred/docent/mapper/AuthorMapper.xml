@@ -6,16 +6,11 @@
 	<insert id="insertAuthor">
 		insert into authors(author_id, exhibition_id,
 		gallery_id,
-		author_name, author_picture, author_description,
+		author_name, author_base64, author_description,
 		author_email,
 		author_instagram)
-		values(seq_author.NEXTVAL,
-		#{exhibition_id},
-		#{gallery_id},
-		#{author_name},
-		#{author_picture},
-		#{author_description},
-		#{author_email}, #{author_instagram})
+		values(seq_author.NEXTVAL, #{exhibition_id}, #{gallery_id},
+		#{author_name}, #{author_base64}, #{author_description}, #{author_email}, #{author_instagram})
 	</insert>
 
 	<select id="list" resultType="AuthorDTO">

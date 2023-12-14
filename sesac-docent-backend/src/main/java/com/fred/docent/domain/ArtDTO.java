@@ -12,5 +12,6 @@ public class ArtDTO {
 	private String work_description;
 	private String work_year;
 	private String work_image;
+	private String work_base64;
 	private String work_size;
 }

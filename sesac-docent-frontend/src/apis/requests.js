@@ -41,3 +41,21 @@ export const deletePosts = async (postIds) => {
     throw error;
   }
 };
+
+export const addGallery = async (body) => {
+  try {
+    const URI = `/gallery/insert`;
+    console.log(body);
+    const response = await api.post(URI, body);
+    console.log(response.data);
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 갤러리: gallery_name, gallery_location, gallery_number
+// 전시: gallery_id, exhibition_name, exhibition_description,
+// 작가: exhibition_id, gallery_id, author_name, author_picture, author_description, author_email, author_instagram
+// 작품: author_id, exhibition_id, gallery_id, work_title, work_description, work_year, work_image, work_size

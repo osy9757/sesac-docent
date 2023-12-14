@@ -4,10 +4,8 @@
 <mapper namespace="com.fred.docent.mapper.GalleryMapper">
 
 	<insert id="insertGallery">
-		insert into galleries(gallery_id, gallery_name,
-		gallery_location, gallery_number)
-		values(seq_gallery.NEXTVAL,
-		#{gallery_name}, #{gallery_location}, #{gallery_number})
+		insert into galleries(gallery_id, gallery_name, gallery_location, gallery_number, gallery_base64)
+		values(seq_gallery.NEXTVAL, #{gallery_name}, #{gallery_location}, #{gallery_number}, #{gallery_base64})
 	</insert>
 
 	<select id="list" resultType="GalleryDTO">
