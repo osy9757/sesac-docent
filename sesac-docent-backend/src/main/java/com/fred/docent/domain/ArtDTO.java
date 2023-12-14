@@ -4,12 +4,13 @@ import lombok.Data;
 
 @Data
 public class ArtDTO {
-	private Long work_Id;
-	private Long author_Id;
-	private Long exhibition_Id;
-	private Long gallery_Id;
-	private String title;
-	private String description;
-	private String year;
-	private String image_url;
+	private Long work_id;
+	private Long author_id;
+	private Long exhibition_id;
+	private Long gallery_id;
+	private String work_title;
+	private String work_description;
+	private String work_year;
+	private String work_image;
+	private String work_size;
 }

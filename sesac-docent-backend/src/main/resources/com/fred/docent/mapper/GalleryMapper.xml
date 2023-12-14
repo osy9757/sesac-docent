@@ -18,9 +18,15 @@
 
 	<update id="invalidate" parameterType="String">
 		UPDATE galleries
-		SET gallery_valid = 0
+		SET
+		gallery_valid = 0
 		WHERE gallery_name = #{gallery_name}
 	</update>
 
+	<update id="update">
+		update galleries set gallery_name = #{gallery_name},
+		gallery_location = #{gallery_location}, gallery_number = #{gallery_number}
+		where gallery_id = #{gallery_id}
+	</update>
 
 </mapper>

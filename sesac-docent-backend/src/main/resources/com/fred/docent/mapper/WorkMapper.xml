@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fred.docent.mapper.WorkMapper">
+
+	<insert id="insertWork">
+		insert into works(work_id, author_id, exhibition_id,
+		gallery_id,
+		work_title, work_description, work_year,
+		work_image,
+		work_size)
+		values(seq_work.NEXTVAL,
+		#{author_id},
+		#{exhibition_id},
+		#{gallery_id},
+		#{work_title},
+		#{work_description},
+		#{work_year}, #{work_image}, #{work_size})
+	</insert>
+
+	<select id="list" resultType="ArtDTO">
+		SELECT * FROM works
+		WHERE
+		work_valid = 1
+	</select>
+
+	<update id="invalidate" parameterType="String">
+		UPDATE works
+		SET
+		work_valid = 0
+		WHERE work_title = #{work_title}
+	</update>
+
+	<update id="update">
+		update works set author_id = #{author_id}, exhibition_id =
+		#{exhibition_id},
+		gallery_id = #{gallery_id}, work_title = #{work_title},
+		work_description =
+		#{work_description}, work_year =
+		#{work_year}, work_image = #{work_image},
+		work_size = #{work_size}
+		where
+		work_id = #{work_id}
+	</update>
+
+</mapper>

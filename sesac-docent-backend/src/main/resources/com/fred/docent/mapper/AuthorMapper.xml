@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fred.docent.mapper.AuthorMapper">
+
+	<insert id="insertAuthor">
+		insert into authors(author_id, exhibition_id,
+		gallery_id,
+		author_name, author_picture, author_description,
+		author_email,
+		author_instagram)
+		values(seq_author.NEXTVAL,
+		#{exhibition_id},
+		#{gallery_id},
+		#{author_name},
+		#{author_picture},
+		#{author_description},
+		#{author_email}, #{author_instagram})
+	</insert>
+
+	<select id="list" resultType="AuthorDTO">
+		SELECT * FROM authors
+		WHERE
+		author_valid = 1
+	</select>
+
+	<update id="invalidate" parameterType="String">
+		UPDATE authors
+		SET
+		author_valid = 0
+		WHERE author_name = #{author_name}
+	</update>
+
+	<update id="update">
+		update authors set exhibition_id =
+		#{exhibition_id},
+		gallery_id = #{gallery_id}, author_name = #{author_name},
+		author_picture =
+		#{author_picture}, author_description =
+		#{author_description}, author_email = #{author_email},
+		author_instagram = #{author_instagram}
+		where
+		author_id = #{author_id}
+	</update>
+
+</mapper>

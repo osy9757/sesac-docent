@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fred.docent.mapper.ExhibitionMapper">
+
+	<insert id="insertExhibition">
+		insert into exhibitions(exhibition_id, gallery_id,
+		exhibition_name, exhibition_description,
+		exhibition_start_date,
+		exhibition_end_date,
+		exhibition_url)
+		values(seq_exhibition.NEXTVAL,
+		#{gallery_id},
+		#{exhibition_name}, #{exhibition_description},
+		#{exhibition_start_date}, #{exhibition_end_date}, #{exhibition_url})
+	</insert>
+
+	<select id="list" resultType="ExhibitionDTO">
+		SELECT * FROM exhibitions
+		WHERE
+		exhibition_valid = 1
+	</select>
+
+	<update id="invalidate" parameterType="String">
+		UPDATE exhibitions
+		SET
+		exhibition_valid = 0
+		WHERE exhibition_name = #{exhibition_name}
+	</update>
+
+	<update id="update">
+		update exhibitions set exhibition_name =
+		#{exhibition_name}, gallery_id = #{gallery_id}, exhibition_description
+		= #{exhibition_description},
+		exhibition_start_date =
+		#{exhibition_start_date}, exhibition_end_date =
+		#{exhibition_end_date}, exhibition_url = #{exhibition_url}
+		where
+		exhibition_id = #{exhibition_id}
+	</update>
+
+</mapper>

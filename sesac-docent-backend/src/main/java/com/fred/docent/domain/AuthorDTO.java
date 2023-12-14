@@ -5,9 +5,12 @@ import lombok.Data;
 @Data
 public class AuthorDTO {
 	
-    private Long author_Id;
-    private Long exhibition_Id;
-    private Long gallery_Id;
-    private String authorName;
-    private String author_Url;
+    private Long author_id;
+    private Long exhibition_id;
+    private Long gallery_id;
+    private String author_name;
+    private String author_picture;
+    private String author_description;
+    private String author_email;
+    private String author_instagram;
 }
