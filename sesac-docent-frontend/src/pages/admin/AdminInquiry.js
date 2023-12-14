@@ -92,6 +92,7 @@ const AdminInquiry = () => {
 
       setLastPage(updatedPosts[0].v_last_page);
       setPosts(updatedPosts);
+      console.log(updatedPosts);
     };
 
     fetchPosts();
@@ -267,7 +268,10 @@ const AdminInquiry = () => {
               {posts.map((post) => (
                 <tr
                   key={post.v_post_id}
-                  className="py-2 px-4 border-b border-zinc-400 cursor-pointer hover:bg-zinc-100 transition"
+                  className={cn(
+                    "py-2 px-4 border-b border-zinc-400 cursor-pointer hover:bg-zinc-100 transition",
+                    post.v_etc === "미답변" ? "font-bold" : "font-thin"
+                  )}
                 >
                   <PostsTableCheckbox
                     id={post.v_post_id}

@@ -17,12 +17,6 @@ const AdminLayout = () => {
   const state = useAppSelector((state) => state.authReducer);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (state.role !== "ROLE_ADMIN") {
-      navigate("/");
-    }
-  });
-
   const hasValidSessionId = () => {
     const sessionId = document.cookie
       .split("; ")
@@ -46,20 +40,30 @@ const AdminLayout = () => {
           authority: role,
           userId,
         } = response.data;
+        if (role !== "ROLE_ADMIN") {
+          navigate("/");
+        }
         dispatch(login({ email, name, role, userId }));
       } catch (error) {
         console.error("Error fetching login info:", error);
       }
     };
+    // if (state.role !== "ROLE_ADMIN") {
+    //   navigate("/");
+    // }
 
     fetchLoginInfo();
-  }, [dispatch, state.email]);
+  }, [dispatch, state.email, navigate]);
 
   const [menuClicked, setMenuClicked] = useState(false);
 
   const menuClickHandler = () => {
     setMenuClicked(!menuClicked);
   };
+
+  useEffect(() => {
+    console.log(state.role);
+  }, [navigate, state.role]);
 
   return (
     <MenuContext.Provider value={{ menuClicked, menuClickHandler }}>
