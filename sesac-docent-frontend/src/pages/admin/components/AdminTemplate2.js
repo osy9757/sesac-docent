@@ -10,11 +10,25 @@ import { Trash } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { openModal } from "store/features/modal-slice";
 import { useAppSelector } from "store/store";
+import { DUMMY_AUTHOR } from "./DUMMY_AUTHOR";
+import { DUMMY_EXHIBITION } from "./DUMMY_EXHIBITION";
+import { DUMMY_GALLERY } from "./DUMMY_GALLERY";
+import { DUMMY_WORK } from "./DUMMY_WORK";
+
+const x = {
+  exhibition: DUMMY_EXHIBITION,
+  author: DUMMY_AUTHOR,
+  gallery: DUMMY_GALLERY,
+  work: DUMMY_WORK,
+};
 
 export const AdminTemplate2 = ({ type, title, buttonName }) => {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
+
+  const DUMMY = x[type];
+  console.log(DUMMY);
 
   useEffect(() => {
     if (!params.pageNumber) {
@@ -104,14 +118,14 @@ export const AdminTemplate2 = ({ type, title, buttonName }) => {
               <PostsTableHead
                 totalClickHandler={totalClickHandler}
                 first="번호"
-                second="상태"
-                third="이름"
-                fourth="제목"
-                fifth="날짜"
+                second="이름"
+                third="설명"
+                fourth="설명"
+                fifth="설명"
               />
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {DUMMY.map((post) => (
                 <PostsRow
                   key={post.id}
                   id={post.id}
