@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import { AdminHeader } from "pages/layout/components/AdminHeader";
 import { AdminSidebar } from "pages/layout/components/AdminSidebar";
@@ -15,6 +15,13 @@ export const MenuContext = createContext();
 const AdminLayout = () => {
   const dispatch = useDispatch();
   const state = useAppSelector((state) => state.authReducer);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state.role !== "ROLE_ADMIN") {
+      navigate("/");
+    }
+  });
 
   const hasValidSessionId = () => {
     const sessionId = document.cookie

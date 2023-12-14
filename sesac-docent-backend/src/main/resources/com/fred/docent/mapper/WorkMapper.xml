@@ -13,7 +13,8 @@
 		#{author_id},
 		#{exhibition_id},
 		#{gallery_id},
-		#{work_title}, #{work_description}, #{work_year}, #{work_base64}, #{work_size})
+		#{work_title}, #{work_description},
+		#{work_year}, #{work_base64}, #{work_size})
 	</insert>
 
 	<select id="list" resultType="ArtDTO">

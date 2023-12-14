@@ -88,7 +88,7 @@ export const AdminTemplate2 = ({ type, title, buttonName }) => {
         </div>
         <div className="w-full flex flex-col relative">
           {checkedPosts.length >= 1 && (
-            <div className="absolute -top-14 w-full h-14 py-2 px-6 flex justify-between items-center bg-zinc-200 rounded-t-md transition">
+            <div className="absolute -top-14 w-full h-14 py-2 px-6 flex justify-between items-center bg-zinc-100 rounded-t-md transition">
               <p>{`${checkedPosts.length}개 선택`}</p>
               <div className="flex gap-1">
                 <Trash />

@@ -44,9 +44,7 @@ export const AuthorModal = () => {
       <div className="h-full w-full flex flex-col items-center bg-white rounded-xl px-10 py-16">
         <div className="w-full flex">
           <p className="w-1/5"></p>
-          <p className="w-3/5 text-3xl font-semibold text-center">
-            갤러리 CRUD
-          </p>
+          <p className="w-3/5 text-3xl font-semibold text-center">작가 CRUD</p>
           <div className="w-1/5 flex justify-end">
             <button onClick={() => dispatch(closeModal())}>
               <X size={30} />

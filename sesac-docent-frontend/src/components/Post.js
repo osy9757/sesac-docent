@@ -56,8 +56,9 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
   };
 
   const showReplyWrite =
-    categoryENG !== "inquiry" ||
-    (categoryENG === "inquiry" && state.role === "ROLE_ADMIN");
+    state.role &&
+    (categoryENG !== "inquiry" ||
+      (categoryENG === "inquiry" && state.role === "ROLE_ADMIN"));
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center p-5 my-20 gap-4">

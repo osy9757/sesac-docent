@@ -3,6 +3,26 @@ import { useLocation, useParams } from "react-router-dom";
 import api from "apis/api";
 import { Heart, HeartOff } from "lucide-react";
 
+const generateRandomNumber = () => {
+  const weights = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  ];
+
+  const totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
+
+  const randomValue = Math.random() * totalWeight;
+
+  let accumulatedWeight = 0;
+  for (let i = 0; i < weights.length; i++) {
+    accumulatedWeight += weights[i];
+    if (randomValue < accumulatedWeight) {
+      return i;
+    }
+  }
+
+  return -1;
+};
+
 export const Reply = ({
   replyId,
   username,
@@ -20,6 +40,8 @@ export const Reply = ({
   const location = useLocation();
   const categoryENG = location.state && location.state.categoryENG;
   const categoryKOR = location.state && location.state.categoryKOR;
+
+  const x = generateRandomNumber();
 
   const heartClickHandler = () => {
     if (like === true) {
@@ -59,7 +81,7 @@ export const Reply = ({
               ) : (
                 <Heart size={30} />
               )}
-              <p className="text-lg font-mono">{likeCount}</p>
+              <p className="text-lg font-mono">{x}</p>
             </button>
           </div>
           <p className="text-lg">{content}</p>
