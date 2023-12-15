@@ -37,7 +37,7 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
     const body = {
       p_user_id: state.userId,
       p_category: 4,
-      p_title: reply_content,
+      p_title: "1",
       p_content: reply_content,
       p_reply_id: postId,
     };
