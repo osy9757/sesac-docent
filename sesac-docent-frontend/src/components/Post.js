@@ -93,7 +93,8 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
                 글쓴이
               </label>
               <p className="border border-black w-11/12 h-12 px-4 py-2 text-xl">
-                {data?.user_name}
+                {/* {data?.user_name} */}
+                김민재
               </p>
             </div>
           </div>
@@ -126,7 +127,7 @@ export const Post = ({ categoryKOR, categoryENG, categoryNUM }) => {
           )}
         </div>
         {/* 버튼영역 (글쓴이만 볼 수 있도록) */}
-        {data?.user_name === state.name && (
+        {state.name && (
           <div className="w-full flex justify-end gap-2">
             <button
               key={1}

@@ -9,9 +9,19 @@ import { useNavigate } from "react-router-dom";
 const modules = {
   toolbar: {
     container: [
-      ["image"],
-      [{ header: [1, 2, 3, 4, 5, false] }],
-      ["bold", "underline"],
+      ["bold", "italic", "underline", "strike"], // 강조, 기울임, 밑줄, 취소선
+      ["blockquote", "code-block"], // 인용구, 코드 블록
+      [{ header: 1 }, { header: 2 }], // 제목 크기
+      [{ list: "ordered" }, { list: "bullet" }], // 순서 있는 목록, 순서 없는 목록
+      [{ script: "sub" }, { script: "super" }], // 아래 첨자, 위 첨자
+      [{ indent: "-1" }, { indent: "+1" }], // 들여쓰기 감소, 증가
+      [{ direction: "rtl" }], // 오른쪽에서 왼쪽으로 텍스트 방향
+      [{ size: ["small", false, "large", "huge"] }], // 텍스트 크기
+      [{ header: [1, 2, 3, 4, 5, 6, false] }], // 제목 크기
+      [{ color: [] }, { background: [] }], // 텍스트 색상, 배경 색상
+      [{ font: [] }], // 글꼴
+      [{ align: [] }], // 정렬
+      ["clean", "link", "image", "video"], // 모든 서식 제거, 링크, 이미지, 비디오 추가
     ],
   },
 };
