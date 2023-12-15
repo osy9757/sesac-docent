@@ -1,53 +1,32 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
 import { HomeCardList } from "./HomeCardList";
-import DUMMY_CHUN from "assets/dummy_chun_01.jpeg";
-import DUMMY_KIM from "assets/dummy_kim_02.jpeg";
-import DUMMY_CHOI from "assets/dummy_choi_03.jpeg";
-import DUMMY_SHIM from "assets/dummy_shim_04.jpeg";
 import { cn } from "utils/tailwind-merge";
 
 export const HomeCardBox = ({ category }) => {
-  const cards = [];
+  const [cards, setCards] = useState([]);
 
   const titleMap = {
     galleries: "갤러리",
     exhibitions: "전시",
+    authors: "작가",
     works: "작품",
-    reviews: "리뷰",
   };
 
-  const DUMMY_CARDS = [
-    {
-      // src: "/assets/dummy_chun_01.jpeg",
-      src: DUMMY_CHUN,
-      title: "내 슬픈 전설의 22페이지",
-      desc: "천경자",
-      desc2: "2023-11-18~2024-01-27",
-    },
-    {
-      // src: "/assets/dummy_kim_02.jpeg",
-      src: DUMMY_KIM,
-      title: "집중 탄생",
-      desc: "김한나",
-      desc2: "2023-11-16~2024-05-19",
-    },
-    {
-      // src: "/assets/dummy_choi_03.jpeg",
-      src: DUMMY_CHOI,
-      title: "함께한 오늘",
-      desc: "최지현",
-      desc2: "2023-11-15~2024-10-20",
-    },
-    {
-      // src: "/assets/dummy_shim_04.jpeg",
-      src: DUMMY_SHIM,
-      title: "햇살 가득한 오후",
-      desc: "심주하",
-      desc2: "2023-11-07~2024-03-03",
-    },
-  ];
+  useEffect(() => {
+    fetch(`http://localhost:3000/posts/listup/${category}/10/1`)
+      .then((response) => response.json())
+      .then((data) => {
+        // 데이터에서 무작위로 4개의 항목을 선택
+        const selectedCards = data.sort(() => 0.5 - Math.random()).slice(0, 4);
+        setCards(selectedCards);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, [category]);
 
   return (
     <div
@@ -69,9 +48,8 @@ export const HomeCardBox = ({ category }) => {
         </Link>
       </div>
       <HomeCardList
-        category={category}
         cards={cards}
-        dummyCards={DUMMY_CARDS}
+        category={category}
       />
     </div>
   );

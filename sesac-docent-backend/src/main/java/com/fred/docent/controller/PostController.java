@@ -72,6 +72,7 @@ public class PostController {
 	@GetMapping(value = "/details/{postId}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FetchPostDetailsResponseDTO>> fetchPostDetails(@PathVariable("postId") Long postId,
 			@PathVariable("category") Integer category) {
+
 		FetchPostDetailsRequestDTO requestDTO = new FetchPostDetailsRequestDTO(postId, category);
 		List<FetchPostDetailsResponseDTO> postDetails = postsService.fetchPostDetails(requestDTO);
 		log.info(requestDTO);
@@ -85,7 +86,7 @@ public class PostController {
 	@GetMapping(value = "/listup/{p_table_name}/{p_page_size}/{p_page_number}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FetchArtCollectionResponseDTO>> fetchArtCollections(
 			@PathVariable("p_table_name") String tablename, @PathVariable("p_page_size") int pageSize,
-			@PathVariable("p_page_number") int pageNumber, @RequestParam(required = false) String searchTitle) {
+			@PathVariable("p_page_number") int pageNumber, @RequestParam(value = "p_search_title", required = false) String searchTitle) {
 
 		FetchPostsRequestDTO requestDTO = FetchPostsRequestDTO.builder().p_table_name(tablename).p_page_size(pageSize)
 				.p_page_number(pageNumber).p_search_title(searchTitle).build();

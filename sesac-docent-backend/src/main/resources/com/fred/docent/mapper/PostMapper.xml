@@ -106,15 +106,18 @@
 		resultType="FetchPostDetailsResponseDTO">
 		<choose>
 			<when test="requestDTO.category == 1">
-				SELECT * FROM TABLE(fetch_post_details_cat1(#{requestDTO.p_post_id
+				SELECT * FROM
+				TABLE(fetch_post_details_cat1(#{requestDTO.p_post_id
 				,jdbcType=NUMERIC}))
 			</when>
 			<when test="requestDTO.category == 2">
-				SELECT * FROM TABLE(fetch_post_details_cat2(#{requestDTO.p_post_id
+				SELECT * FROM
+				TABLE(fetch_post_details_cat2(#{requestDTO.p_post_id
 				,jdbcType=NUMERIC}))
 			</when>
 			<when test="requestDTO.category == 3">
-				SELECT * FROM TABLE(fetch_post_details_cat3(#{requestDTO.p_post_id
+				SELECT * FROM
+				TABLE(fetch_post_details_cat3(#{requestDTO.p_post_id
 				,jdbcType=NUMERIC}))
 			</when>
 			<otherwise>
@@ -127,15 +130,35 @@
 	<select id="fetchArtCollections"
 		parameterType="FetchPostsRequestDTO"
 		resultType="FetchArtCollectionResponseDTO">
-		{ CALL fetch_artcollections(
-		#{p_table_name,
-		jdbcType=VARCHAR, mode=IN},
-		#{p_search_title, jdbcType=VARCHAR,
-		mode=IN},
-		#{p_page_size, jdbcType=NUMERIC, mode=IN},
-		#{p_page_number,
-		jdbcType=NUMERIC, mode=IN}
-		) }
+		<choose>
+			<when test="requestDTO.p_table_name == 'galleries'">
+				select * from table(fetch_galleries(
+					#{requestDTO.p_page_size ,jdbcType=NUMERIC},
+					#{requestDTO.p_page_number ,jdbcType=NUMERIC},
+					#{requestDTO.p_search_title ,jdbcType=VARCHAR}))
+			</when>
+			<when test="requestDTO.p_table_name == 'exhibitions'">
+				select * from table(fetch_exhibitions(
+					#{requestDTO.p_page_size ,jdbcType=NUMERIC},
+					#{requestDTO.p_page_number ,jdbcType=NUMERIC},
+					#{requestDTO.p_search_title ,jdbcType=VARCHAR})) 
+			</when>
+			<when test="requestDTO.p_table_name == 'authors'">
+				select * from table(fetch_authors(
+					#{requestDTO.p_page_size ,jdbcType=NUMERIC},
+					#{requestDTO.p_page_number ,jdbcType=NUMERIC},
+					#{requestDTO.p_search_title ,jdbcType=VARCHAR})) 
+			</when>
+			<when test="requestDTO.p_table_name == 'works'">
+				select * from table(fetch_works(
+					#{requestDTO.p_page_size ,jdbcType=NUMERIC},
+					#{requestDTO.p_page_number ,jdbcType=NUMERIC},
+					#{requestDTO.p_search_title ,jdbcType=VARCHAR})) 
+			</when>
+			<otherwise>
+				SELECT 'Invalid category value' AS error_message FROM DUAL
+			</otherwise>
+		</choose>
 	</select>
 
 

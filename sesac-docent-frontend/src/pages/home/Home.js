@@ -25,8 +25,8 @@ const Home = () => {
       <section className="flex flex-col justify-center max-w-[1300px] mx-auto gap-8 mt-24 mb-36">
         <HomeCardBox category="galleries" />
         <HomeCardBox category="exhibitions" />
+        <HomeCardBox category="authors" />
         <HomeCardBox category="works" />
-        <HomeCardBox category="reviews" />
       </section>
     </div>
   );

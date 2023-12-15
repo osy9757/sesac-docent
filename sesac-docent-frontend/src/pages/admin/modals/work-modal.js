@@ -13,7 +13,7 @@ export const WorkModal = () => {
     const gallery_id = event.target.galleryId.value;
     const exhibition_id = event.target.exhibitionId.value;
     const author_id = event.target.authorId.value;
-    const work_title = event.target.workTitle.value;
+    const wokr_title = event.target.workTitle.value;
     const work_description = event.target.workDescription.value;
     const work_year = event.target.workYear.value;
     const work_size = event.target.workSize.value;
@@ -29,7 +29,7 @@ export const WorkModal = () => {
       gallery_id,
       exhibition_id,
       author_id,
-      work_title,
+      wokr_title,
       work_description,
       work_year,
       work_size,
