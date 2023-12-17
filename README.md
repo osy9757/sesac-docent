@@ -59,3 +59,14 @@
 <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
 
 
+
+## 아쉬웠던 점 (학습이 필요한점 )
+
+- 프로시저 리턴방식
+  - pl/sql에서의 리턴방식
+  - spring에서 Mapper 연결을 어떻게 해야할지
+
+- 중첩 함수 사용
+  - 단일 함수와 중첩 함수의 사용 방식 차이
+  - 중첩 함수도 pipe로 결과를 받을 수 있는지
+  - 중첩함수의 Mapper와 연결 방법
